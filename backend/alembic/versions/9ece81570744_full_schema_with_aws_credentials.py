@@ -1,8 +1,8 @@
-"""create mvp critical tables
+"""full schema with aws credentials
 
-Revision ID: 562242b6568a
+Revision ID: 9ece81570744
 Revises: 
-Create Date: 2026-06-12 23:13:29.911147
+Create Date: 2026-06-12 23:56:55.721895
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import app.db.types
 
 
 # revision identifiers, used by Alembic.
-revision: str = '562242b6568a'
+revision: str = '9ece81570744'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -56,6 +56,9 @@ def upgrade() -> None:
     sa.Column('account_name', sa.String(length=255), nullable=True),
     sa.Column('role_arn', sa.String(), nullable=True),
     sa.Column('external_id', sa.String(), nullable=True),
+    sa.Column('aws_access_key_enc', sa.String(), nullable=True),
+    sa.Column('aws_secret_key_enc', sa.String(), nullable=True),
+    sa.Column('region', sa.String(length=50), nullable=True),
     sa.Column('status', sa.Enum('CONNECTED', 'DISCONNECTED', 'ERROR', 'SYNCING', name='cloud_account_status_enum'), nullable=False),
     sa.Column('last_sync_at', sa.DateTime(timezone=True), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
