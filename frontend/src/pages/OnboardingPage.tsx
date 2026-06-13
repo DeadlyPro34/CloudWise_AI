@@ -95,6 +95,15 @@ export function OnboardingPage() {
         }}
       />
 
+      {/* Back button */}
+      <button 
+        onClick={() => navigate('/dashboard')}
+        className="absolute top-8 left-8 flex items-center gap-2 text-sm font-medium transition-colors hover:text-(--color-text-primary) z-20"
+        style={{ color: "var(--color-text-secondary)" }}
+      >
+        <ArrowLeft className="w-4 h-4" /> Back to Dashboard
+      </button>
+
       {/* Step indicator */}
       <div className="flex items-center gap-2 mb-8 relative z-10">
         {STEPS.map((label, i) => (

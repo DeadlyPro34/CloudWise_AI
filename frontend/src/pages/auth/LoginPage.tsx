@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { useAuth } from "../../store/AuthContext";
 import { Button } from "../../components/ui/Button";
 import { Input } from "../../components/ui/Input";
@@ -31,8 +32,11 @@ export function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="card w-full max-w-md">
-        <div className="mb-6 text-center">
+      <div className="card w-full max-w-md relative">
+        <Link to="/" className="absolute top-4 left-4 text-(--color-text-secondary) hover:text-(--color-text-primary) transition-colors">
+          <ArrowLeft className="w-5 h-5" />
+        </Link>
+        <div className="mb-6 text-center mt-2">
           <h2 className="mb-1">CloudWise AI</h2>
           <p className="caption">Your AI FinOps Copilot</p>
         </div>
