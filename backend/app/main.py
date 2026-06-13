@@ -20,6 +20,7 @@ from app.api import dashboard as dashboard_router
 from app.api import copilot as copilot_router
 from app.api import forecast as forecast_router
 from app.api import reports as reports_router
+from app.api import settings as settings_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -60,6 +61,7 @@ app.include_router(dashboard_router.router, prefix=API_PREFIX)
 app.include_router(copilot_router.router, prefix=API_PREFIX)
 app.include_router(forecast_router.router, prefix=API_PREFIX)
 app.include_router(reports_router.router, prefix=API_PREFIX)
+app.include_router(settings_router.router, prefix=API_PREFIX)
 
 
 # ------------------------------------------------------------
