@@ -22,12 +22,11 @@ else:
 
 engine = create_engine(settings.DATABASE_URL, **_engine_kwargs)
 
-# Enable WAL mode and foreign keys for SQLite (improves concurrency & integrity)
+# Enable foreign keys for SQLite (improves integrity). WAL mode is omitted to avoid I/O lock issues in synced folders like OneDrive.
 if _is_sqlite:
     @event.listens_for(engine, "connect")
     def _set_sqlite_pragma(dbapi_connection, connection_record):
         cursor = dbapi_connection.cursor()
-        cursor.execute("PRAGMA journal_mode=WAL")
         cursor.execute("PRAGMA foreign_keys=ON")
         cursor.close()
 

@@ -4,8 +4,10 @@ CloudWise AI - Backend Entry Point
 FastAPI application setup: middleware, routers, rate limiting, CORS.
 """
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+import traceback
 from slowapi.errors import RateLimitExceeded
 from slowapi import _rate_limit_exceeded_handler
 
@@ -33,6 +35,16 @@ app = FastAPI(
 # ------------------------------------------------------------
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+@app.exception_handler(Exception)
+def debug_exception_handler(request: Request, exc: Exception):
+    tb_str = "".join(traceback.format_tb(exc.__traceback__))
+    return JSONResponse(
+        status_code=500,
+        content={
+            "detail": f"Internal Server Error: {str(exc)}\n{tb_str}"
+        }
+    )
 
 # ------------------------------------------------------------
 # Security Headers
