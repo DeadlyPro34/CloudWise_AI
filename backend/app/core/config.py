@@ -48,10 +48,10 @@ class Settings(BaseSettings):
     AWS_SECRET_ACCESS_KEY: str | None = None
 
     # ------------------------------------------------------------
-    # AI / Claude API
+    # AI / Groq API (Llama)
     # ------------------------------------------------------------
-    ANTHROPIC_API_KEY: str | None = None
-    CLAUDE_MODEL: str = "claude-sonnet-4-6"
+    GROQ_API_KEY: str | None = None
+    GROQ_MODEL: str = "llama-3.3-70b-versatile"
 
     # ------------------------------------------------------------
     # Rate Limiting

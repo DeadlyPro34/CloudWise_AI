@@ -19,7 +19,7 @@ explains it all in plain English via an AI Copilot.
 | Database   | PostgreSQL 16 (Production) / SQLite (Local Dev Auto-Fallback) |
 | AWS        | Boto3 (Cost Explorer, CloudWatch, EC2, EBS) |
 | ML         | scikit-learn (Isolation Forest), Prophet (forecasting) |
-| AI         | Anthropic Claude API (Copilot) |
+| AI         | Groq API — Llama 3.3 70B (Copilot) |
 | Auth       | JWT + Argon2 password hashing |
 | Deployment | Railway (backend + DB), Vercel (frontend) |
 
@@ -43,7 +43,7 @@ cloudwise-ai/
 - Python 3.11+
 - Node.js 22+
 - An AWS account with read-only IAM credentials (for AWS features)
-- An Anthropic API key (for Copilot)
+- A Groq API key (for Copilot — free at https://console.groq.com)
 
 ---
 
@@ -53,7 +53,7 @@ cloudwise-ai/
 
 ```bash
 cd backend
-cp .env.example .env          # fill in ANTHROPIC_API_KEY for Claude integration
+cp .env.example .env          # fill in GROQ_API_KEY for AI Copilot
 
 python -m venv venv
 # Activate the virtual environment
@@ -126,7 +126,7 @@ App available at `http://localhost:5173`
 - ✅ Cost analysis & Cloud Health Score
 - ✅ Recommendation engine (idle/unattached resource detection)
 - ✅ Spend forecasting (Prophet)
-- ✅ AI Copilot (Claude API integration)
+- ✅ AI Copilot (Groq Llama API integration)
 - ✅ Downloadable PDF reports
 
 ---

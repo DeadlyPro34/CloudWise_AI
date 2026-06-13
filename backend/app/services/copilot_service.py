@@ -2,14 +2,14 @@
 Copilot service — AI assistant with real infrastructure context.
 
 build_context() queries the user's account data to construct a rich
-system prompt.  chat() sends the user's message with context to Claude
-and persists both user + assistant messages to the DB.
+system prompt.  chat() sends the user's message with context to Groq
+(Llama) and persists both user + assistant messages to the DB.
 """
 
 import uuid
 from datetime import date, timedelta
 
-import anthropic
+from groq import Groq
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 
@@ -25,7 +25,7 @@ from app.models.copilot import CopilotConversation, CopilotMessage, MessageRole
 def build_context(db: Session, cloud_account_id: uuid.UUID) -> str:
     """
     Build a concise natural-language context string summarising the user's
-    AWS environment for the Claude system prompt.
+    AWS environment for the LLM system prompt.
     """
     # Resource counts by type
     type_counts = dict(
@@ -150,15 +150,15 @@ def chat(
             except Exception:
                 context = ""
 
-    # Call Claude
-    if not settings.ANTHROPIC_API_KEY:
+    # Call Groq (Llama)
+    if not settings.GROQ_API_KEY:
         response_text = (
             "The AI Copilot is not configured yet. "
-            "Please add your Anthropic API key in Settings."
+            "Please add your Groq API key in Settings."
         )
     else:
         try:
-            client = anthropic.Anthropic(api_key=settings.ANTHROPIC_API_KEY)
+            client = Groq(api_key=settings.GROQ_API_KEY)
 
             system_prompt = (
                 "You are CloudWise AI Copilot, an expert AWS FinOps assistant. "
@@ -177,23 +177,22 @@ def chat(
             ).scalars().all()
 
             # Build messages in chronological order (reverse the desc order)
-            messages = []
+            messages = [{"role": "system", "content": system_prompt}]
             for msg in reversed(list(recent_msgs)):
                 role = "user" if msg.role == MessageRole.USER else "assistant"
                 messages.append({"role": role, "content": msg.content})
 
-            response = client.messages.create(
-                model=settings.CLAUDE_MODEL,
+            response = client.chat.completions.create(
+                model=settings.GROQ_MODEL,
                 max_tokens=1024,
-                system=system_prompt,
                 messages=messages,
             )
-            response_text = response.content[0].text
+            response_text = response.choices[0].message.content
 
         except Exception:
             response_text = (
                 "The AI Copilot encountered an error. "
-                "Please check your Anthropic API key in Settings."
+                "Please check your Groq API key in Settings."
             )
 
     # Persist assistant response
