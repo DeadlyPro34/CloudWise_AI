@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   AreaChart,
   Area,
@@ -19,6 +20,8 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { getDashboard, getRecommendations } from "../services/dashboard";
+import { scanAWS } from "../services/aws";
+import { getApiErrorMessage } from "../services/apiClient";
 import { Button } from "../components/ui/Button";
 
 function formatCurrency(value: number): string {
@@ -37,6 +40,9 @@ function getHealthColor(score: number): string {
 
 export function DashboardPage() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [scanning, setScanning] = useState(false);
+  const [scanError, setScanError] = useState<string | null>(null);
 
   const {
     data: dashboard,
@@ -57,6 +63,19 @@ export function DashboardPage() {
     dashError ||
     (!dashLoading && dashboard?.resource_count === 0 && dashboard?.total_spend === 0);
 
+  const handleRescan = async () => {
+    setScanning(true);
+    setScanError(null);
+    try {
+      await scanAWS();
+      queryClient.invalidateQueries();
+    } catch (err) {
+      setScanError(getApiErrorMessage(err) || "Failed to rescan AWS account.");
+    } finally {
+      setScanning(false);
+    }
+  };
+
   if (noAccountConnected) {
     return (
       <div className="animate-[fadeIn_0.5s_ease]">
@@ -69,10 +88,9 @@ export function DashboardPage() {
           >
             <CloudOff className="w-10 h-10" style={{ color: "var(--color-accent-hover)" }} />
           </div>
-          <h3 className="mb-2">No AWS Account Connected</h3>
+          <h3 className="mb-2">Connect your AWS account to get started</h3>
           <p className="caption mb-6 max-w-sm mx-auto">
-            Connect your AWS account to start analyzing costs, discovering savings, and
-            getting AI-powered recommendations.
+            CloudWise AI will scan your infrastructure, detect waste, and generate optimization recommendations.
           </p>
           <Button
             onClick={() => navigate("/onboarding")}
@@ -89,8 +107,20 @@ export function DashboardPage() {
 
   return (
     <div className="animate-[fadeIn_0.4s_ease]">
-      <h2 className="mb-1">Dashboard</h2>
-      <p className="caption mb-6">Your cloud cost command center</p>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="mb-1">Dashboard</h2>
+          <p className="caption">Your cloud cost command center</p>
+        </div>
+        {!noAccountConnected && (
+          <div className="flex flex-col items-end">
+            <Button onClick={handleRescan} disabled={scanning || dashLoading}>
+              {scanning ? "Scanning..." : "Rescan Data"}
+            </Button>
+            {scanError && <span className="text-red-400 text-xs mt-1">{scanError}</span>}
+          </div>
+        )}
+      </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
