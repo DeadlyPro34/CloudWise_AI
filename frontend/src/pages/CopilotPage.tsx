@@ -92,13 +92,21 @@ export function CopilotPage() {
             className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} animate-[fadeIn_0.3s_ease]`}
           >
             <div
-              className={`max-w-[70%] p-3 rounded-lg ${
+              className={`max-w-[70%] px-4 py-3 rounded-2xl ${
                 msg.role === "user"
-                  ? "bg-(--color-accent) text-white"
+                  ? "bg-(--color-accent)"
                   : "bg-(--color-surface)"
               }`}
             >
-              <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+              <p
+                className="text-sm whitespace-pre-wrap leading-relaxed"
+                style={{
+                  color: msg.role === "user" ? "#ffffff" : "var(--color-text-primary)",
+                  margin: 0,
+                }}
+              >
+                {msg.content}
+              </p>
             </div>
           </div>
         ))}
