@@ -337,13 +337,15 @@ def get_resources(
     if not org:
         return []
 
-    # Get all cloud account IDs for this org
-    account_ids = db.execute(
-        select(CloudAccount.id).where(CloudAccount.organization_id == org.id)
+    accounts = db.execute(
+        select(CloudAccount).where(CloudAccount.organization_id == org.id)
     ).scalars().all()
 
-    if not account_ids:
+    if not accounts:
         return []
+
+    account_ids = [a.id for a in accounts]
+    account_map = {a.id: a.account_id for a in accounts}
 
     thirty_days_ago = date.today() - timedelta(days=30)
 
@@ -374,6 +376,7 @@ def get_resources(
             "tags": r.tags,
             "metadata_json": r.metadata_json,
             "monthly_cost": monthly_cost,
+            "account_id": account_map.get(r.cloud_account_id),
         })
 
     return result

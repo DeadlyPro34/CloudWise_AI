@@ -12,6 +12,10 @@ export function SettingsPage() {
   const [showKey, setShowKey] = useState(false);
   const [saving, setSaving] = useState(false);
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; msg: string } | null>(null);
+  
+  // AWS Connection State
+  const [awsConnected, setAwsConnected] = useState(false);
+  const [awsAccountId, setAwsAccountId] = useState<string | null>(null);
 
   // Fetch current key status on mount
   useEffect(() => {
@@ -23,6 +27,22 @@ export function SettingsPage() {
       })
       .catch(() => {
         // Not critical — just means we can't check status
+      });
+
+    // Fetch AWS connection status
+    apiClient
+      .get("/aws/resources")
+      .then((res) => {
+        if (res.data && res.data.length > 0) {
+          setAwsConnected(true);
+          // Assuming the backend returns account_id in the resource objects
+          setAwsAccountId(res.data[0].account_id);
+        } else {
+          setAwsConnected(false);
+        }
+      })
+      .catch(() => {
+        setAwsConnected(false);
       });
   }, []);
 
@@ -77,11 +97,19 @@ export function SettingsPage() {
             <div>
               <label className="block text-sm text-(--color-text-secondary) mb-1">Status</label>
               <div className="flex items-center gap-2">
-                <span className="badge badge-success">Connected</span>
-                <span className="text-sm">Account ID: 123456789012</span>
+                {awsConnected ? (
+                  <>
+                    <span className="badge badge-success">Connected</span>
+                    {awsAccountId && <span className="text-sm">Account ID: {awsAccountId}</span>}
+                  </>
+                ) : (
+                  <span className="badge bg-gray-500 text-white">Not Connected</span>
+                )}
               </div>
             </div>
-            <Button variant="secondary" className="w-full">Disconnect AWS Account</Button>
+            {awsConnected && (
+              <Button variant="secondary" className="w-full">Disconnect AWS Account</Button>
+            )}
           </div>
         </div>
 
