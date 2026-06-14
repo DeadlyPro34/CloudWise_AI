@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Zap, Mail, Lock, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { Zap, Mail, Lock, ArrowRight, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useAuth } from "../../store/AuthContext";
 import { Button } from "../../components/ui/Button";
 import { getApiErrorMessage } from "../../services/apiClient";
@@ -238,6 +238,10 @@ export function LoginPage() {
           </div>
 
           <div style={{ marginBottom: "2.5rem" }}>
+            <Link to="/" className="inline-flex items-center gap-2 text-sm text-(--color-text-secondary) hover:text-(--color-text-primary) transition-colors mb-6">
+              <ArrowLeft className="w-4 h-4" />
+              Back to home
+            </Link>
             <h2 style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>Sign in</h2>
             <p className="caption">Welcome back — let's check on your cloud costs.</p>
           </div>

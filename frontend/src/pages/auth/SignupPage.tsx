@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Zap, Mail, Lock, User, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { Zap, Mail, Lock, User, ArrowRight, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useAuth } from "../../store/AuthContext";
 import { Button } from "../../components/ui/Button";
 import { getApiErrorMessage } from "../../services/apiClient";
@@ -180,6 +180,10 @@ export function SignupPage() {
           </div>
 
           <div style={{ marginBottom: "2rem" }}>
+            <Link to="/" className="inline-flex items-center gap-2 text-sm text-(--color-text-secondary) hover:text-(--color-text-primary) transition-colors mb-6">
+              <ArrowLeft className="w-4 h-4" />
+              Back to home
+            </Link>
             <h2 style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>Create account</h2>
             <p className="caption">Start optimizing your cloud costs — free forever.</p>
           </div>
