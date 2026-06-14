@@ -19,3 +19,8 @@ export async function getRecommendations(): Promise<Recommendation[]> {
   const { data } = await apiClient.get<Recommendation[]>("/recommendations");
   return data;
 }
+
+export async function updateRecommendationStatus(id: string, status: "ACKNOWLEDGED" | "DISMISSED"): Promise<any> {
+  const { data } = await apiClient.patch(`/recommendations/${id}/status`, { status });
+  return data;
+}

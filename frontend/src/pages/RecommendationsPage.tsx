@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import {
   Lightbulb,
@@ -10,7 +10,7 @@ import {
   X,
   ArrowRight,
 } from "lucide-react";
-import { getRecommendations, getDashboard } from "../services/dashboard";
+import { getRecommendations, getDashboard, updateRecommendationStatus } from "../services/dashboard";
 import { Button } from "../components/ui/Button";
 import type { Recommendation } from "../types";
 
@@ -71,6 +71,16 @@ function groupByPriority(recs: Recommendation[]) {
 
 export function RecommendationsPage() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: ({ id, status }: { id: string; status: "ACKNOWLEDGED" | "DISMISSED" }) =>
+      updateRecommendationStatus(id, status),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["recommendations"] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+    },
+  });
 
   const {
     data: recommendations,
@@ -237,15 +247,19 @@ export function RecommendationsPage() {
 
                   <div className="flex items-center gap-2 pt-3" style={{ borderTop: "1px solid var(--color-surface)" }}>
                     <button
-                      className="btn-primary flex items-center gap-1.5 text-sm"
+                      className="btn-primary flex items-center gap-1.5 text-sm disabled:opacity-50"
                       style={{ padding: "6px 14px", fontSize: "13px" }}
+                      onClick={() => mutation.mutate({ id: rec.id, status: "ACKNOWLEDGED" })}
+                      disabled={mutation.isPending}
                     >
                       <CheckCircle className="w-3.5 h-3.5" />
                       Acknowledge
                     </button>
                     <button
-                      className="btn-secondary flex items-center gap-1.5 text-sm"
+                      className="btn-secondary flex items-center gap-1.5 text-sm disabled:opacity-50"
                       style={{ padding: "6px 14px", fontSize: "13px" }}
+                      onClick={() => mutation.mutate({ id: rec.id, status: "DISMISSED" })}
+                      disabled={mutation.isPending}
                     >
                       <X className="w-3.5 h-3.5" />
                       Dismiss
