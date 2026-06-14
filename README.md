@@ -36,7 +36,7 @@ CloudWise AI connects to your AWS account, discovers infrastructure, analyzes co
 1. **Clone the repository**
    ```bash
    git clone <YOUR_REPO_URL>
-   cd cloudwise-ai
+   cd CloudWise_AI
    ```
 
 2. **Setup Backend**
