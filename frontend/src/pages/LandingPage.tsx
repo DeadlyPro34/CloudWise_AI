@@ -341,28 +341,24 @@ export function LandingPage() {
       {/* ── VALUE PROPS ── */}
       <section
         id="pricing"
-        className="relative z-10 px-6 py-20"
+        className="relative z-10 value-props-section"
         style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
       >
-        <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
-          <h2 style={{ marginBottom: "1rem" }}>Why teams choose CloudWise</h2>
-          <p style={{ fontSize: "1rem", color: "#8B93B5", marginBottom: "3rem" }}>
+        <div className="value-props-container">
+          <h2 className="value-props-heading">Why teams choose CloudWise</h2>
+          <p className="value-props-subtext">
             Built for engineers who care about cost, not just DevOps accountants.
           </p>
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: "1.5rem", textAlign: "left",
-          }}>
+          <div className="value-props-grid">
             {[
               "Read-only IAM access — we never touch your infrastructure",
               "No per-seat pricing — one flat rate for the whole team",
               "SOC 2 Type II certified infrastructure",
               "Works with all AWS regions and multi-account setups",
             ].map((point) => (
-              <div key={point} style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start" }}>
+              <div key={point} className="value-props-card">
                 <CheckCircle className="w-5 h-5 shrink-0 mt-0.5" style={{ color: "#34D399" }} />
-                <p style={{ fontSize: "0.9rem", color: "#8B93B5", lineHeight: 1.6 }}>{point}</p>
+                <p className="value-props-card-text">{point}</p>
               </div>
             ))}
           </div>
@@ -409,6 +405,37 @@ export function LandingPage() {
         @keyframes blink {
           0%, 100% { opacity: 1; }
           50%       { opacity: 0; }
+        }
+
+        /* Value Props Section CSS */
+        .value-props-section { padding: 80px 48px; }
+        .value-props-container { max-width: 680px; margin: 0 auto; text-align: center; }
+        .value-props-heading { font-size: 36px; margin-bottom: 1rem; }
+        .value-props-subtext { font-size: 16px; color: #8B93B5; margin-bottom: 3rem; }
+        .value-props-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; text-align: left; }
+        .value-props-card {
+          display: flex; gap: 0.75rem; align-items: flex-start;
+          background: rgba(255,255,255,0.03); border: 0.5px solid rgba(255,255,255,0.08);
+          border-radius: 10px; padding: 16px;
+        }
+        .value-props-card-text { font-size: 15px; color: #8B93B5; line-height: 1.6; }
+
+        @media (max-width: 768px) {
+          .value-props-section { padding: 60px 28px; }
+          .value-props-container { max-width: 100%; }
+          .value-props-heading { font-size: 28px; }
+          .value-props-subtext { font-size: 14px; }
+          .value-props-grid { gap: 12px; }
+          .value-props-card-text { font-size: 14px; }
+        }
+
+        @media (max-width: 480px) {
+          .value-props-section { padding: 48px 16px; }
+          .value-props-heading { font-size: 22px; }
+          .value-props-subtext { font-size: 13px; }
+          .value-props-grid { grid-template-columns: 1fr; gap: 10px; }
+          .value-props-card { padding: 12px 14px; }
+          .value-props-card-text { font-size: 13px; }
         }
       `}</style>
     </div>
