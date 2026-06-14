@@ -170,12 +170,12 @@ def analyze_unattached_ebs(
         ).scalar()
 
         estimated_savings = 0.0
+        size_gb = 0
+        if resource.metadata_json and "size_gb" in resource.metadata_json:
+            size_gb = resource.metadata_json["size_gb"]
         if avg_daily_cost_raw is not None and float(avg_daily_cost_raw) > 0:
             estimated_savings = float(avg_daily_cost_raw) * 30
         else:
-            size_gb = 0
-            if resource.metadata_json and "size_gb" in resource.metadata_json:
-                size_gb = resource.metadata_json["size_gb"]
             estimated_savings = float(size_gb) * 0.10  # ~$0.10/GB/month for gp2
 
         rec = Recommendation(
