@@ -440,11 +440,9 @@ function FooterModal({ modalKey, onClose }: { modalKey: ModalKey; onClose: () =>
 function FooterCol({
   heading,
   links,
-  onLinkClick,
 }: {
   heading: string;
   links: { label: string }[];
-  onLinkClick: (key: ModalKey) => void;
 }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
@@ -452,25 +450,16 @@ function FooterCol({
         {heading}
       </p>
       {links.map(({ label }) => (
-        <button
+        <span
           key={label}
-          onClick={() => onLinkClick(label as ModalKey)}
           style={{
-            background: "none",
-            border: "none",
-            padding: 0,
-            textAlign: "left",
-            cursor: "pointer",
             fontSize: "0.95rem",
             color: "#9ca3af",
-            transition: "color 0.2s",
             fontFamily: "inherit",
           }}
-          onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#ffffff")}
-          onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#9ca3af")}
         >
           {label}
-        </button>
+        </span>
       ))}
     </div>
   );
@@ -479,7 +468,7 @@ function FooterCol({
 /* -------------------------------------------------
    Footer
 ------------------------------------------------- */
-function Footer({ onLinkClick }: { onLinkClick: (key: ModalKey) => void }) {
+function Footer() {
   return (
     <footer
       style={{
@@ -514,19 +503,16 @@ function Footer({ onLinkClick }: { onLinkClick: (key: ModalKey) => void }) {
         </div>
 
         <FooterCol
-          heading="Product"
-          links={[{ label: "Features" }, { label: "Changelog" }, { label: "Documentation" }]}
-          onLinkClick={onLinkClick}
+          heading="Quick Links"
+          links={[{ label: "Features" }, { label: "Why Us" }, { label: "Documentation" }]}
         />
         <FooterCol
           heading="Company"
-          links={[{ label: "About Us" }, { label: "Careers" }, { label: "Blog" }, { label: "Contact" }]}
-          onLinkClick={onLinkClick}
+          links={[{ label: "About Us" }, { label: "Contact" }]}
         />
         <FooterCol
           heading="Legal"
           links={[{ label: "Privacy Policy" }, { label: "Terms of Service" }, { label: "Security (SOC 2)" }, { label: "Cookie Policy" }]}
-          onLinkClick={onLinkClick}
         />
       </div>
 
@@ -877,10 +863,7 @@ export function LandingPage() {
       </section>
 
       {/* FOOTER */}
-      <Footer onLinkClick={openModal} />
-
-      {/* MODAL */}
-      <FooterModal modalKey={modalKey} onClose={closeModal} />
+      <Footer />
 
       {/* Global styles */}
       <style>{`
