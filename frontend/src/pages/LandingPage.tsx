@@ -58,11 +58,13 @@ function useTypewriter(phrases: string[], typingSpeed = 55, pauseMs = 1800, dele
 }
 
 /* ── Nav link with animated underline ── */
-function NavLink({ label, href, badge }: { label: string; href: string; badge?: string }) {
+function NavLink({ label, href, badge, isActive, onClick }: { label: string; href: string; badge?: string; isActive?: boolean; onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void }) {
   const [hovered, setHovered] = useState(false);
+  const active = isActive || hovered;
   return (
     <a
       href={href}
+      onClick={onClick}
       style={{ position: "relative", textDecoration: "none" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -70,7 +72,7 @@ function NavLink({ label, href, badge }: { label: string; href: string; badge?: 
       <span style={{
         display: "inline-flex", alignItems: "center", gap: "0.4rem",
         fontSize: "0.9rem", fontWeight: 500,
-        color: hovered ? "#EEF2FF" : "#8B93B5",
+        color: active ? "#EEF2FF" : "#8B93B5",
         transition: "color 0.2s ease",
       }}>
         {label}
@@ -89,7 +91,7 @@ function NavLink({ label, href, badge }: { label: string; href: string; badge?: 
       <span style={{
         position: "absolute", bottom: -3, left: 0,
         height: 1.5, borderRadius: 99,
-        width: hovered ? "100%" : "0%",
+        width: active ? "100%" : "0%",
         background: "linear-gradient(90deg, #5B52F0, #7B75FF)",
         transition: "width 0.25s ease",
         display: "block",
@@ -106,6 +108,34 @@ export function LandingPage() {
     "Cloud Clarity",
     "Cloud Efficiency",
   ]);
+
+  const [activeSection, setActiveSection] = useState<string>("");
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-65px 0px -50% 0px" }
+    );
+
+    const sections = document.querySelectorAll("section[id]");
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.history.pushState(null, "", `#${id}`);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col relative" style={{ background: "#050508" }}>
@@ -161,9 +191,9 @@ export function LandingPage() {
 
         {/* Styled nav links */}
         <nav className="hidden md:flex items-center gap-8">
-          <NavLink label="Features" href="#features" />
-          <NavLink label="Pricing"  href="#pricing" />
-          <NavLink label="Docs"     href="#docs"    badge="new" />
+          <NavLink label="Features" href="#features" isActive={activeSection === "features"} onClick={(e) => scrollToSection(e, "features")} />
+          <NavLink label="Pricing"  href="#pricing" isActive={activeSection === "pricing"} onClick={(e) => scrollToSection(e, "pricing")} />
+          <NavLink label="Docs"     href="#docs"    badge="new" isActive={activeSection === "docs"} onClick={(e) => scrollToSection(e, "docs")} />
         </nav>
 
         {/* CTA buttons */}
@@ -374,6 +404,8 @@ export function LandingPage() {
 
       {/* Blink keyframe injected inline */}
       <style>{`
+        html { scroll-behavior: smooth; }
+        #features, #pricing, #docs { scroll-margin-top: 64px; }
         @keyframes blink {
           0%, 100% { opacity: 1; }
           50%       { opacity: 0; }
