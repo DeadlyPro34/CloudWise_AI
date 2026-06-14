@@ -85,6 +85,7 @@ export function AboutPage() {
             style={{
               fontSize: "clamp(2.4rem, 5vw, 3.6rem)",
               fontWeight: 800,
+              fontFamily: "var(--font-serif)",
               color: "#EEF2FF",
               lineHeight: 1.1,
               letterSpacing: "-0.03em",

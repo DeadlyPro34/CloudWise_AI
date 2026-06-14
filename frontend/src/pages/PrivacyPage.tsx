@@ -28,7 +28,7 @@ const SECTIONS = [
     color: "#6366f1",
     items: [
       { label: "Access & correction", detail: "You may request a copy of your data or ask us to correct inaccuracies at any time." },
-      { label: "Deletion", detail: "Email privacy@cloudwise.ai to request account and data deletion. Data is permanently removed within 30 days of account closure." },
+      { label: "Deletion", detail: "Email cloudwiseai@gmail.com to request account and data deletion. Data is permanently removed within 30 days of account closure." },
       { label: "Portability", detail: "You can export your cost data in CSV or JSON format from the Reports section at any time." },
     ],
   },
@@ -37,8 +37,8 @@ const SECTIONS = [
     title: "Contact & Enquiries",
     color: "#818cf8",
     items: [
-      { label: "Privacy contact", detail: "privacy@cloudwise.ai — we respond to all privacy-related enquiries within 5 business days." },
-      { label: "DPA requests", detail: "Enterprise customers requiring a Data Processing Agreement should contact legal@cloudwise.ai." },
+      { label: "Privacy contact", detail: "cloudwiseai@gmail.com — we respond to all privacy-related enquiries within 5 business days." },
+      { label: "DPA requests", detail: "Enterprise customers requiring a Data Processing Agreement should contact cloudwiseai@gmail.com." },
     ],
   },
 ];
@@ -90,6 +90,7 @@ export function PrivacyPage() {
             style={{
               fontSize: "clamp(2.2rem, 5vw, 3rem)",
               fontWeight: 800,
+              fontFamily: "var(--font-serif)",
               color: "#EEF2FF",
               lineHeight: 1.15,
               letterSpacing: "-0.03em",
@@ -163,8 +164,8 @@ export function PrivacyPage() {
         >
           <p style={{ color: "#8B93B5", fontSize: "0.875rem", margin: 0, lineHeight: 1.6 }}>
             This policy may be updated periodically. We'll notify you of material changes via email or an in-app banner.{" "}
-            <a href="mailto:privacy@cloudwise.ai" style={{ color: "#7B75FF", textDecoration: "none" }}>
-              privacy@cloudwise.ai
+            <a href="mailto:cloudwiseai@gmail.com" style={{ color: "#7B75FF", textDecoration: "none" }}>
+              cloudwiseai@gmail.com
             </a>
           </p>
         </div>

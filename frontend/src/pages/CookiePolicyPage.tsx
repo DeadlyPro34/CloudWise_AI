@@ -97,6 +97,7 @@ export function CookiePolicyPage() {
             style={{
               fontSize: "clamp(2.2rem, 5vw, 3rem)",
               fontWeight: 800,
+              fontFamily: "var(--font-serif)",
               color: "#EEF2FF",
               lineHeight: 1.15,
               letterSpacing: "-0.03em",
@@ -204,8 +205,8 @@ export function CookiePolicyPage() {
           <p style={{ color: "#8B93B5", fontSize: "0.875rem", margin: 0, lineHeight: 1.65 }}>
             Manage cookie preferences in your browser settings or in the{" "}
             <strong style={{ color: "#EEF2FF" }}>Account → Privacy</strong> panel after signing in. Questions?{" "}
-            <a href="mailto:privacy@cloudwise.ai" style={{ color: "#7B75FF", textDecoration: "none" }}>
-              privacy@cloudwise.ai
+            <a href="mailto:cloudwiseai@gmail.com" style={{ color: "#7B75FF", textDecoration: "none" }}>
+              cloudwiseai@gmail.com
             </a>
           </p>
         </div>

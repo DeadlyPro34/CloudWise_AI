@@ -5,6 +5,7 @@ import { AuthProvider } from "./store/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AppShell } from "./layouts/AppShell";
 import { GlobalErrorBoundary } from "./components/ErrorBoundary";
+import { ScrollToTop } from "./components/ScrollToTop";
 
 // Public pages
 import { LandingPage } from "./pages/LandingPage";
@@ -43,6 +44,7 @@ function App() {
         <AuthProvider>
           <BackgroundMesh />
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<LandingPage />} />

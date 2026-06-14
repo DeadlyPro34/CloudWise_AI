@@ -3,138 +3,212 @@ import { useState } from "react";
 import { Zap, Menu, X } from "lucide-react";
 
 /* ─────────────────────────────────────────────
-   Shared Navbar  (used by all public info pages)
+   NavLink with animated underline — identical to LandingPage
+───────────────────────────────────────────── */
+function NavAnchor({
+  label,
+  href,
+  badge,
+}: {
+  label: string;
+  href: string;
+  badge?: string;
+}) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <a
+      href={href}
+      style={{ position: "relative", textDecoration: "none", paddingBottom: 2 }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <span
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "0.4rem",
+          fontSize: "0.95rem",
+          fontWeight: 500,
+          color: hovered ? "#EEF2FF" : "#8B93B5",
+          transition: "color 0.2s ease",
+        }}
+      >
+        {label}
+        {badge && (
+          <span
+            style={{
+              fontSize: "0.58rem",
+              fontWeight: 700,
+              letterSpacing: "0.06em",
+              padding: "0.12rem 0.38rem",
+              borderRadius: 99,
+              background: "rgba(52,211,153,0.14)",
+              color: "#34D399",
+              border: "1px solid rgba(52,211,153,0.25)",
+              textTransform: "uppercase",
+            }}
+          >
+            {badge}
+          </span>
+        )}
+      </span>
+      {/* Animated underline */}
+      <span
+        style={{
+          position: "absolute",
+          bottom: -2,
+          left: 0,
+          height: 1.5,
+          borderRadius: 99,
+          width: hovered ? "100%" : "0%",
+          background: "linear-gradient(90deg,#5B52F0,#7B75FF)",
+          transition: "width 0.25s ease",
+          display: "block",
+        }}
+      />
+    </a>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   Navbar — identical to LandingPage header
 ───────────────────────────────────────────── */
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav
+    <header
       style={{
         position: "sticky",
         top: 0,
-        zIndex: 100,
-        background: "rgba(7,8,15,0.88)",
-        backdropFilter: "blur(18px)",
-        WebkitBackdropFilter: "blur(18px)",
+        zIndex: 50,
+        background: "rgba(5,5,8,0.85)",
+        backdropFilter: "blur(24px)",
+        WebkitBackdropFilter: "blur(24px)",
         borderBottom: "1px solid rgba(255,255,255,0.07)",
       }}
     >
+      {/* Header row */}
       <div
+        className="header-inner"
         style={{
-          maxWidth: 1100,
-          margin: "0 auto",
-          padding: "0 24px",
-          height: 60,
+          height: 64,
+          padding: "0 1.5rem",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          maxWidth: 1200,
+          margin: "0 auto",
+          width: "100%",
         }}
       >
         {/* Logo */}
         <Link
           to="/"
-          style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "0.5rem", flexShrink: 0 }}
+          style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "0.65rem", flexShrink: 0 }}
         >
           <div
             style={{
-              width: 30,
-              height: 30,
-              borderRadius: 8,
+              width: 34,
+              height: 34,
+              borderRadius: 10,
               background: "linear-gradient(135deg,#5B52F0,#7B75FF)",
+              boxShadow: "0 4px 16px rgba(91,82,240,0.45)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              flexShrink: 0,
             }}
           >
             <Zap size={15} color="#fff" />
           </div>
-          <span style={{ fontSize: "1.05rem", fontWeight: 700, color: "#EEF2FF", letterSpacing: "-0.01em" }}>
+          <span
+            style={{
+              fontSize: "1.05rem",
+              fontWeight: 700,
+              color: "#EEF2FF",
+              fontFamily: "var(--font-sans)",
+              letterSpacing: "-0.01em",
+              whiteSpace: "nowrap",
+            }}
+          >
             CloudWise AI
           </span>
         </Link>
 
-        {/* Desktop nav links — hidden on mobile via CSS class */}
-        <div className="landing-nav-links">
-          {[
-            { label: "Features", href: "/#features" },
-            { label: "Why Us", href: "/#why-us" },
-            { label: "Docs", href: "/docs" },
-          ].map(({ label, href }) => (
-            <a
-              key={label}
-              href={href}
-              style={{ fontSize: "0.92rem", fontWeight: 500, color: "#8B93B5", textDecoration: "none", transition: "color 0.2s" }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#EEF2FF")}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#8B93B5")}
+        {/* Desktop nav — uses CSS class, hidden on mobile */}
+        <nav className="landing-nav-links" style={{ gap: "2.5rem" }}>
+          <NavAnchor label="Features"     href="/#features" />
+          <NavAnchor label="Why Us"       href="/#why-us" />
+          <NavAnchor label="Docs"         href="/#docs" badge="new" />
+        </nav>
+
+        {/* Right side: CTAs + hamburger */}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+          <div className="landing-nav-ctas">
+            <Link
+              to="/login"
+              className="btn-secondary"
+              style={{ padding: "0.48rem 1.1rem", fontSize: "0.875rem" }}
             >
-              {label}
-            </a>
-          ))}
-        </div>
+              Log In
+            </Link>
+            <Link
+              to="/signup"
+              className="btn-primary"
+              style={{ padding: "0.48rem 1.1rem", fontSize: "0.875rem" }}
+            >
+              Get Started
+            </Link>
+          </div>
 
-        {/* Desktop CTA buttons — hidden on mobile via CSS class */}
-        <div className="landing-nav-ctas">
-          <Link
-            to="/login"
-            style={{ fontSize: "0.88rem", fontWeight: 500, color: "#8B93B5", textDecoration: "none", padding: "0.4rem 0.9rem", transition: "color 0.2s" }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#EEF2FF")}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#8B93B5")}
-          >
-            Log In
-          </Link>
-          <Link
-            to="/signup"
+          {/* Hamburger — CSS class shows it only on mobile */}
+          <button
+            className="landing-hamburger"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label="Toggle menu"
+            aria-expanded={menuOpen}
             style={{
-              fontSize: "0.85rem",
-              fontWeight: 600,
-              color: "#fff",
-              textDecoration: "none",
-              padding: "0.48rem 1.15rem",
-              background: "linear-gradient(135deg,#5B52F0,#7B75FF)",
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.1)",
               borderRadius: 8,
-              transition: "opacity 0.2s",
+              color: "#8B93B5",
+              width: 36,
+              height: 36,
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              flexShrink: 0,
             }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.opacity = "0.85")}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.opacity = "1")}
           >
-            Get Started
-          </Link>
+            {menuOpen ? <X size={16} /> : <Menu size={16} />}
+          </button>
         </div>
-
-        {/* Hamburger — shown only on mobile via CSS class */}
-        <button
-          className="landing-hamburger"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-          aria-expanded={menuOpen}
-        >
-          {menuOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
       </div>
 
-      {/* Mobile dropdown menu */}
+      {/* Mobile dropdown */}
       {menuOpen && (
-        <div
+        <nav
           style={{
-            background: "#0e0f1a",
             borderTop: "1px solid rgba(255,255,255,0.07)",
-            padding: "1rem 24px 1.5rem",
+            background: "rgba(5,5,8,0.98)",
+            padding: "1rem 1.5rem 1.5rem",
             display: "flex",
             flexDirection: "column",
-            gap: "0.85rem",
+            gap: "0.75rem",
           }}
         >
           {[
             { label: "Features", href: "/#features" },
-            { label: "Why Us", href: "/#why-us" },
-            { label: "Docs", href: "/docs" },
+            { label: "Why Us",   href: "/#why-us" },
+            { label: "Docs",     href: "/#docs" },
           ].map(({ label, href }) => (
             <a
               key={label}
               href={href}
               onClick={() => setMenuOpen(false)}
-              style={{ color: "#8B93B5", textDecoration: "none", fontSize: "1rem", padding: "0.35rem 0" }}
+              style={{ color: "#8B93B5", textDecoration: "none", fontSize: "0.95rem", padding: "0.25rem 0" }}
             >
               {label}
             </a>
@@ -143,7 +217,7 @@ function Navbar() {
           <Link
             to="/login"
             onClick={() => setMenuOpen(false)}
-            style={{ color: "#8B93B5", textDecoration: "none", fontSize: "1rem", padding: "0.35rem 0" }}
+            style={{ color: "#8B93B5", textDecoration: "none", fontSize: "0.95rem", padding: "0.25rem 0" }}
           >
             Log In
           </Link>
@@ -164,14 +238,14 @@ function Navbar() {
           >
             Get Started
           </Link>
-        </div>
+        </nav>
       )}
-    </nav>
+    </header>
   );
 }
 
 /* ─────────────────────────────────────────────
-   Shared Footer
+   Footer
 ───────────────────────────────────────────── */
 function FooterCol({ heading, links }: { heading: string; links: { label: string; href: string }[] }) {
   return (
@@ -257,25 +331,25 @@ function PageFooter() {
         <FooterCol
           heading="Quick Links"
           links={[
-            { label: "Features", href: "/#features" },
-            { label: "Why Us", href: "/#why-us" },
-            { label: "Documentation", href: "/docs" },
+            { label: "Features",      href: "/#features" },
+            { label: "Why Us",        href: "/#why-us" },
+            { label: "Documentation", href: "/#docs" },
           ]}
         />
         <FooterCol
           heading="Company"
           links={[
             { label: "About Us", href: "/about" },
-            { label: "Contact", href: "/contact" },
+            { label: "Contact",  href: "/contact" },
           ]}
         />
         <FooterCol
           heading="Legal"
           links={[
-            { label: "Privacy Policy", href: "/privacy" },
-            { label: "Terms of Service", href: "/terms" },
-            { label: "Security (SOC 2)", href: "/security" },
-            { label: "Cookie Policy", href: "/cookies" },
+            { label: "Privacy Policy",    href: "/privacy" },
+            { label: "Terms of Service",  href: "/terms" },
+            { label: "Security (SOC 2)",  href: "/security" },
+            { label: "Cookie Policy",     href: "/cookies" },
           ]}
         />
       </div>
@@ -318,7 +392,7 @@ function PageFooter() {
 }
 
 /* ─────────────────────────────────────────────
-   PageShell — wraps any public page
+   PageShell — wraps all public info pages
 ───────────────────────────────────────────── */
 export function PageShell({ children }: { children: React.ReactNode }) {
   return (

@@ -92,6 +92,7 @@ export function TermsPage() {
             style={{
               fontSize: "clamp(2.2rem, 5vw, 3rem)",
               fontWeight: 800,
+              fontFamily: "var(--font-serif)",
               color: "#EEF2FF",
               lineHeight: 1.15,
               letterSpacing: "-0.03em",
@@ -173,8 +174,8 @@ export function TermsPage() {
         >
           <p style={{ color: "#8B93B5", fontSize: "0.875rem", margin: 0, lineHeight: 1.6 }}>
             Questions about these Terms? Contact us at{" "}
-            <a href="mailto:legal@cloudwise.ai" style={{ color: "#7B75FF", textDecoration: "none" }}>
-              legal@cloudwise.ai
+            <a href="mailto:cloudwiseai@gmail.com" style={{ color: "#7B75FF", textDecoration: "none" }}>
+              cloudwiseai@gmail.com
             </a>
           </p>
         </div>

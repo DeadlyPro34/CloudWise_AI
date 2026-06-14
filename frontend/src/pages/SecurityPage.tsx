@@ -91,6 +91,7 @@ export function SecurityPage() {
             style={{
               fontSize: "clamp(2.2rem, 5vw, 3.2rem)",
               fontWeight: 800,
+              fontFamily: "var(--font-serif)",
               color: "#EEF2FF",
               lineHeight: 1.1,
               letterSpacing: "-0.03em",
@@ -221,7 +222,7 @@ export function SecurityPage() {
                 provide completed security questionnaires in your preferred format.
               </p>
               <a
-                href="mailto:security@cloudwise.ai"
+                href="mailto:cloudwiseai@gmail.com"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -250,7 +251,7 @@ export function SecurityPage() {
         <p style={{ color: "#6b7280", fontSize: "0.9rem" }}>
           Found a security issue?{" "}
           <a
-            href="mailto:security@cloudwise.ai"
+            href="mailto:cloudwiseai@gmail.com"
             style={{ color: "#7B75FF", textDecoration: "none", fontWeight: 500 }}
             onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.textDecoration = "underline")}
             onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.textDecoration = "none")}

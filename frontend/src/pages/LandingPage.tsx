@@ -233,7 +233,7 @@ const MODAL_DATA: Record<Exclude<ModalKey, null>, { heading: string; bullets: st
     ],
     paras: [
       "Full API reference, Terraform module docs, and advanced configuration guides are in the documentation portal.",
-      "Questions? Reach us at support@cloudwise.ai",
+      "Questions? Reach us at cloudwiseai@gmail.com",
     ],
   },
   "About Us": {
@@ -256,7 +256,7 @@ const MODAL_DATA: Record<Exclude<ModalKey, null>, { heading: string; bullets: st
     ],
     paras: [
       "We are a remote-first company that hires for impact, not pedigree. If you love solving hard infrastructure and data problems, we want to hear from you.",
-      "Send your CV and a short note to careers@cloudwise.ai",
+      "Send your CV and a short note to cloudwiseai@gmail.com",
     ],
   },
   Blog: {
@@ -273,10 +273,10 @@ const MODAL_DATA: Record<Exclude<ModalKey, null>, { heading: string; bullets: st
   Contact: {
     heading: "Contact Us",
     bullets: [
-      "General enquiries: hello@cloudwise.ai",
-      "Technical support: support@cloudwise.ai",
-      "Security disclosures: security@cloudwise.ai",
-      "Press and partnerships: press@cloudwise.ai",
+      "General enquiries: cloudwiseai@gmail.com",
+      "Technical support: cloudwiseai@gmail.com",
+      "Security disclosures: cloudwiseai@gmail.com",
+      "Press and partnerships: cloudwiseai@gmail.com",
     ],
     paras: [
       "We are a small team and we read every message. Expect a reply within one business day.",
@@ -290,7 +290,7 @@ const MODAL_DATA: Record<Exclude<ModalKey, null>, { heading: string; bullets: st
       "Last updated: June 1, 2026.",
       "CloudWise AI is committed to protecting your personal data. We collect account information (name, email, company), usage telemetry, and AWS billing data you authorise us to read via a read-only IAM role. We do not collect application data, source code, or customer PII from your AWS environment.",
       "Billing data is used solely to generate cost analytics and recommendations. Usage telemetry improves the product. We never sell data to third parties.",
-      "You may request access, correction, or deletion of your data at any time by emailing privacy@cloudwise.ai. Data is deleted within 30 days of account closure.",
+      "You may request access, correction, or deletion of your data at any time by emailing cloudwiseai@gmail.com. Data is deleted within 30 days of account closure.",
     ],
   },
   "Terms of Service": {
@@ -315,7 +315,7 @@ const MODAL_DATA: Record<Exclude<ModalKey, null>, { heading: string; bullets: st
     ],
     paras: [
       "Security is foundational to CloudWise. We have completed a SOC 2 Type II audit covering Security, Availability, and Confidentiality trust service criteria.",
-      "To request our SOC 2 report or security questionnaire, contact security@cloudwise.ai",
+      "To request our SOC 2 report or security questionnaire, contact cloudwiseai@gmail.com",
     ],
   },
   "Cookie Policy": {

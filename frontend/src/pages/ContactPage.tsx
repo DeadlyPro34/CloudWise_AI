@@ -6,28 +6,28 @@ const CONTACT_CARDS = [
   {
     icon: Mail,
     label: "General Enquiries",
-    email: "hello@cloudwise.ai",
+    email: "cloudwiseai@gmail.com",
     desc: "Questions about the product, pricing, or partnerships? Start here.",
     color: "#5B52F0",
   },
   {
     icon: Headphones,
     label: "Technical Support",
-    email: "support@cloudwise.ai",
+    email: "cloudwiseai@gmail.com",
     desc: "Stuck on an integration or seeing unexpected data? We've got you.",
     color: "#7B75FF",
   },
   {
     icon: Shield,
     label: "Security Disclosures",
-    email: "security@cloudwise.ai",
+    email: "cloudwiseai@gmail.com",
     desc: "Found a vulnerability? We take all security reports seriously and respond fast.",
     color: "#6366f1",
   },
   {
     icon: Megaphone,
     label: "Press & Partnerships",
-    email: "press@cloudwise.ai",
+    email: "cloudwiseai@gmail.com",
     desc: "Media enquiries, co-marketing, and strategic partnerships.",
     color: "#818cf8",
   },
@@ -80,6 +80,7 @@ export function ContactPage() {
             style={{
               fontSize: "clamp(2.2rem, 5vw, 3.2rem)",
               fontWeight: 800,
+              fontFamily: "var(--font-serif)",
               color: "#EEF2FF",
               lineHeight: 1.1,
               letterSpacing: "-0.03em",
@@ -260,7 +261,7 @@ export function ContactPage() {
         <p style={{ color: "#6b7280", fontSize: "0.9rem" }}>
           Prefer async?{" "}
           <a
-            href="mailto:hello@cloudwise.ai"
+            href="mailto:cloudwiseai@gmail.com"
             style={{ color: "#7B75FF", textDecoration: "none", fontWeight: 500 }}
             onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.textDecoration = "underline")}
             onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.textDecoration = "none")}
