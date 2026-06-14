@@ -18,6 +18,7 @@ import { RecommendationsPage } from "./pages/RecommendationsPage";
 import { CopilotPage } from "./pages/CopilotPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { BackgroundMesh } from "./components/BackgroundMesh";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,6 +33,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+        <BackgroundMesh />
         <BrowserRouter>
           <Routes>
             {/* Public routes */}
@@ -62,3 +64,4 @@ function App() {
 }
 
 export default App;
+
