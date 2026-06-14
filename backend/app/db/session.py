@@ -5,6 +5,7 @@ Supports both PostgreSQL and SQLite (auto-detected from DATABASE_URL).
 
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
+from sqlalchemy.pool import QueuePool
 
 from app.core.config import settings
 
@@ -18,6 +19,9 @@ _engine_kwargs: dict = {}
 if _is_sqlite:
     _engine_kwargs["connect_args"] = {"check_same_thread": False}
 else:
+    _engine_kwargs["poolclass"] = QueuePool
+    _engine_kwargs["pool_size"] = 10
+    _engine_kwargs["max_overflow"] = 20
     _engine_kwargs["pool_pre_ping"] = True  # verify connections (handles Railway sleep/wake)
 
 engine = create_engine(settings.DATABASE_URL, **_engine_kwargs)
