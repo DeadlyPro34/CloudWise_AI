@@ -59,6 +59,8 @@ def get_dashboard(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
+    import logging
+    logger = logging.getLogger(__name__)
     """
     KPI summary for the dashboard hero cards + cost trend chart.
 
@@ -142,7 +144,7 @@ def get_dashboard(
         for row in trend_rows
     ]
 
-    return {
+    payload = {
         "total_spend": round(total_spend, 2),
         "potential_savings": round(potential_savings, 2),
         "health_score": round(health_score, 2),
@@ -150,6 +152,16 @@ def get_dashboard(
         "cost_trend": cost_trend,
         "is_connected": True,
     }
+
+    logger.warning(f"--- DASHBOARD PIPELINE TRACE ---")
+    logger.warning(f"User ID: {current_user.id}")
+    logger.warning(f"Account IDs found for User: {account_ids}")
+    logger.warning(f"Resources found in DB for accounts: {resource_count}")
+    logger.warning(f"Calculated Total Spend: {total_spend}")
+    logger.warning(f"Calculated Potential Savings: {potential_savings}")
+    logger.warning(f"API Payload Returning: {payload}")
+
+    return payload
 
 
 # ------------------------------------------------------------------

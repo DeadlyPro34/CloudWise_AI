@@ -68,7 +68,7 @@ def build_context(db: Session, cloud_account_id: uuid.UUID) -> str:
         select(CloudHealthScore)
         .where(CloudHealthScore.cloud_account_id == cloud_account_id)
         .order_by(CloudHealthScore.calculated_at.desc())
-    ).scalar_one_or_none()
+    ).scalars().first()
 
     # Build summary
     lines = [
@@ -117,7 +117,7 @@ def chat(
         select(CopilotConversation)
         .where(CopilotConversation.organization_id == org_id)
         .order_by(CopilotConversation.created_at.desc())
-    ).scalar_one_or_none()
+    ).scalars().first()
 
     if not conversation:
         conversation = CopilotConversation(organization_id=org_id)
@@ -143,7 +143,7 @@ def chat(
         # Try to find a cloud account for this org
         account = db.execute(
             select(CloudAccount).where(CloudAccount.organization_id == org_id)
-        ).scalar_one_or_none()
+        ).scalars().first()
         if account:
             try:
                 context = build_context(db, account.id)

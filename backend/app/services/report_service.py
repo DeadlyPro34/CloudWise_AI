@@ -36,7 +36,7 @@ def generate_report(db: Session, cloud_account_id: uuid.UUID | None) -> bytes:
         doc.build(elements)
         return buffer.getvalue()
 
-    account = db.execute(select(CloudAccount).where(CloudAccount.id == cloud_account_id)).scalar_one_or_none()
+    account = db.execute(select(CloudAccount).where(CloudAccount.id == cloud_account_id)).scalars().first()
     if not account:
         elements.append(Paragraph("AWS Account not found.", styles['Heading2']))
         doc.build(elements)
@@ -77,7 +77,7 @@ def generate_report(db: Session, cloud_account_id: uuid.UUID | None) -> bytes:
         select(CloudHealthScore)
         .where(CloudHealthScore.cloud_account_id == cloud_account_id)
         .order_by(CloudHealthScore.calculated_at.desc())
-    ).scalar_one_or_none()
+    ).scalars().first()
 
     hs_val = float(latest_hs.score) if latest_hs else 0.0
 
@@ -156,13 +156,14 @@ def generate_report(db: Session, cloud_account_id: uuid.UUID | None) -> bytes:
     forecasts = db.execute(
         select(Forecast)
         .where(Forecast.cloud_account_id == cloud_account_id)
-        .order_by(Forecast.forecast_date.asc())
+        .order_by(Forecast.generated_at.desc())
     ).scalars().all()
 
     if forecasts:
-        fc_data = [["Date", "Predicted Cost"]]
+        fc_data = [["Forecast Type", "Predicted Cost"]]
         for fc in forecasts:
-            fc_data.append([fc.forecast_date.isoformat(), f"${fc.predicted_cost:,.2f}"])
+            fc_type = fc.forecast_type.value if hasattr(fc.forecast_type, 'value') else str(fc.forecast_type)
+            fc_data.append([fc_type, f"${fc.predicted_cost:,.2f}"])
         
         t = Table(fc_data, colWidths=[150, 150])
         t.setStyle(TableStyle([

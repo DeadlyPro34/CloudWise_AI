@@ -5,6 +5,9 @@ fetching cost data, and CloudWatch metrics.
 
 import boto3
 from datetime import datetime, timedelta, timezone
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def connect_aws(access_key: str, secret_key: str, region: str = "us-east-1", use_localstack: bool = False) -> dict:
@@ -22,6 +25,8 @@ def connect_aws(access_key: str, secret_key: str, region: str = "us-east-1", use
         region_name=region,
     )
     endpoint_url = "http://localhost:4566" if use_localstack else None
+    logger.info(f"Connecting to AWS STS. Environment: {'LocalStack' if use_localstack else 'AWS'}, Endpoint: {endpoint_url or 'default'}")
+    
     sts = session.client("sts", endpoint_url=endpoint_url)
     identity = sts.get_caller_identity()
     return {
@@ -34,6 +39,8 @@ def connect_aws(access_key: str, secret_key: str, region: str = "us-east-1", use
 def discover_ec2(session: boto3.Session, region: str, use_localstack: bool = False) -> list[dict]:
     """Discover EC2 instances and map to ResourceInventory-compatible dicts."""
     endpoint_url = "http://localhost:4566" if use_localstack else None
+    logger.info(f"Discovering EC2. Environment: {'LocalStack' if use_localstack else 'AWS'}, Endpoint: {endpoint_url or 'default'}")
+    
     ec2 = session.client("ec2", region_name=region, endpoint_url=endpoint_url)
     response = ec2.describe_instances()
     resources: list[dict] = []
@@ -73,12 +80,16 @@ def discover_ec2(session: boto3.Session, region: str, use_localstack: bool = Fal
                     },
                 }
             )
+    
+    logger.info(f"Discovered {len(resources)} EC2 instances.")
     return resources
 
 
 def discover_ebs(session: boto3.Session, region: str, use_localstack: bool = False) -> list[dict]:
     """Discover EBS volumes and map to ResourceInventory-compatible dicts."""
     endpoint_url = "http://localhost:4566" if use_localstack else None
+    logger.info(f"Discovering EBS. Environment: {'LocalStack' if use_localstack else 'AWS'}, Endpoint: {endpoint_url or 'default'}")
+    
     ec2 = session.client("ec2", region_name=region, endpoint_url=endpoint_url)
     response = ec2.describe_volumes()
     resources: list[dict] = []
@@ -119,12 +130,16 @@ def discover_ebs(session: boto3.Session, region: str, use_localstack: bool = Fal
                 },
             }
         )
+        
+    logger.info(f"Discovered {len(resources)} EBS volumes.")
     return resources
 
 
 def get_cost_data(session: boto3.Session, region: str, use_localstack: bool = False) -> list[dict]:
     """Get cost data from AWS Cost Explorer for last 30 days, grouped by SERVICE."""
     endpoint_url = "http://localhost:4566" if use_localstack else None
+    logger.info(f"Fetching Cost Data. Environment: {'LocalStack' if use_localstack else 'AWS'}, Endpoint: {endpoint_url or 'default'}")
+    
     ce = session.client("ce", region_name="us-east-1", endpoint_url=endpoint_url)  # CE endpoint is always us-east-1
     end = datetime.now(timezone.utc).date()
     start = end - timedelta(days=30)
@@ -160,6 +175,8 @@ def get_cloudwatch_metrics(
 ) -> dict[str, float]:
     """Get average CPUUtilization over 7 days for each EC2 instance."""
     endpoint_url = "http://localhost:4566" if use_localstack else None
+    logger.info(f"Fetching CloudWatch Metrics. Environment: {'LocalStack' if use_localstack else 'AWS'}, Endpoint: {endpoint_url or 'default'}")
+    
     cw = session.client("cloudwatch", region_name=region, endpoint_url=endpoint_url)
     end = datetime.now(timezone.utc)
     start = end - timedelta(days=7)
@@ -182,7 +199,8 @@ def get_cloudwatch_metrics(
             else:
                 avg = 0.0
             metrics[instance_id] = avg
-        except Exception:
+        except Exception as e:
+            logger.warning(f"Failed to fetch CloudWatch metrics for {instance_id}: {e}")
             metrics[instance_id] = 0.0
 
     return metrics
