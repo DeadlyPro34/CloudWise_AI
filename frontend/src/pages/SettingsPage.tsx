@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Settings, Key, User, Cloud, Check, AlertCircle, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../store/AuthContext";
 import { Button } from "../components/ui/Button";
@@ -17,6 +18,7 @@ export function SettingsPage() {
   // AWS Connection State
   const [awsConnected, setAwsConnected] = useState(false);
   const [awsAccountId, setAwsAccountId] = useState<string | null>(null);
+  const [isLocalStack, setIsLocalStack] = useState(false);
 
   // Fetch current key status on mount
   useEffect(() => {
@@ -36,10 +38,12 @@ export function SettingsPage() {
       .then((res) => {
         if (res.data && res.data.length > 0) {
           setAwsConnected(true);
-          // Assuming the backend returns account_id in the resource objects
           setAwsAccountId(res.data[0].account_id);
+          // Just infer LocalStack if account_id is 000000000000
+          setIsLocalStack(res.data[0].account_id === "000000000000");
         } else {
           setAwsConnected(false);
+          setIsLocalStack(false);
         }
       })
       .catch(() => {
@@ -117,9 +121,15 @@ export function SettingsPage() {
                   <>
                     <span className="badge badge-success">Connected</span>
                     {awsAccountId && <span className="text-sm">Account ID: {awsAccountId}</span>}
+                    {isLocalStack && <span className="badge bg-indigo-500 text-white ml-2">LocalStack</span>}
                   </>
                 ) : (
-                  <span className="badge bg-gray-500 text-white">Not Connected</span>
+                  <>
+                    <span className="badge bg-gray-500 text-white">Not Connected</span>
+                    <Link to="/onboarding" className="text-sm text-(--color-accent) hover:underline ml-2">
+                      Connect Account
+                    </Link>
+                  </>
                 )}
               </div>
             </div>

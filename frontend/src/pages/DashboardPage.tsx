@@ -58,10 +58,10 @@ export function DashboardPage() {
     queryFn: getRecommendations,
   });
 
-  // Empty state — no AWS account connected (either error or all zeros)
+  // Empty state — no AWS account connected (either error or is_connected false)
   const noAccountConnected =
     dashError ||
-    (!dashLoading && dashboard?.resource_count === 0 && dashboard?.total_spend === 0);
+    (!dashLoading && dashboard && dashboard.is_connected === false);
 
   const handleRescan = async () => {
     setScanning(true);

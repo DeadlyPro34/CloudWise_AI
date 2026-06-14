@@ -166,6 +166,7 @@ def connect_aws(
             access_key=payload.aws_access_key_id,
             secret_key=payload.aws_secret_access_key,
             region=payload.region,
+            use_localstack=payload.use_localstack,
         )
     except Exception as e:
         _raise_aws_error(e)
@@ -187,6 +188,7 @@ def connect_aws(
         existing.aws_access_key_enc = encrypt(payload.aws_access_key_id)
         existing.aws_secret_key_enc = encrypt(payload.aws_secret_access_key)
         existing.region = payload.region
+        existing.is_localstack = payload.use_localstack
         existing.updated_at = datetime.now(timezone.utc)
         account = existing
     else:
@@ -199,6 +201,7 @@ def connect_aws(
             aws_access_key_enc=encrypt(payload.aws_access_key_id),
             aws_secret_key_enc=encrypt(payload.aws_secret_access_key),
             region=payload.region,
+            is_localstack=payload.use_localstack,
         )
         db.add(account)
 
@@ -211,6 +214,7 @@ def connect_aws(
         "account_id": account.account_id,
         "account_name": account.account_name,
         "status": account.status.value,
+        "environment": "localstack" if account.is_localstack else "aws",
     }
 
 
@@ -274,13 +278,13 @@ def scan_aws(
         access_key = decrypt(account.aws_access_key_enc)
         secret_key = decrypt(account.aws_secret_key_enc)
         aws_result = aws_service.connect_aws(
-            access_key, secret_key, region
+            access_key, secret_key, region, use_localstack=account.is_localstack
         )
         session = aws_result["session"]
 
         # ── Discover resources ──────────────────────────────────
-        ec2_resources = aws_service.discover_ec2(session, region)
-        ebs_resources = aws_service.discover_ebs(session, region)
+        ec2_resources = aws_service.discover_ec2(session, region, use_localstack=account.is_localstack)
+        ebs_resources = aws_service.discover_ebs(session, region, use_localstack=account.is_localstack)
         all_discovered = ec2_resources + ebs_resources
 
         # Upsert into resource_inventory
@@ -321,7 +325,7 @@ def scan_aws(
 
         # ── Cost data (Cost Explorer) ──────────────────────────
         try:
-            cost_data = aws_service.get_cost_data(session, region)
+            cost_data = aws_service.get_cost_data(session, region, use_localstack=account.is_localstack)
             _store_cost_data(db, account.id, cost_data)
         except Exception:
             pass  # CE may not be enabled — skip gracefully
@@ -330,7 +334,7 @@ def scan_aws(
         ec2_ids = [r["resource_id"] for r in ec2_resources]
         if ec2_ids:
             try:
-                cw_metrics = aws_service.get_cloudwatch_metrics(session, region, ec2_ids)
+                cw_metrics = aws_service.get_cloudwatch_metrics(session, region, ec2_ids, use_localstack=account.is_localstack)
                 for instance_id, avg_cpu in cw_metrics.items():
                     inv_id = resource_map.get(instance_id)
                     if inv_id is None:

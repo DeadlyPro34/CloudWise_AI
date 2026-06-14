@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Cloud,
@@ -46,12 +46,24 @@ export function OnboardingPage() {
   const [accessKey, setAccessKey] = useState("");
   const [secretKey, setSecretKey] = useState("");
   const [region, setRegion] = useState("us-east-1");
+  const [useLocalstack, setUseLocalstack] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [connectError, setConnectError] = useState("");
   const [scanError, setScanError] = useState("");
   const [connectResult, setConnectResult] = useState<AWSConnectResponse | null>(null);
   const [scanResult, setScanResult] = useState<AWSScanResponse | null>(null);
+
+  useEffect(() => {
+    if (useLocalstack) {
+      setAccessKey("test");
+      setSecretKey("test");
+      setRegion("us-east-1");
+    } else {
+      setAccessKey("");
+      setSecretKey("");
+    }
+  }, [useLocalstack]);
 
   async function handleConnect() {
     setIsConnecting(true);
@@ -61,6 +73,7 @@ export function OnboardingPage() {
         aws_access_key_id: accessKey,
         aws_secret_access_key: secretKey,
         region,
+        use_localstack: useLocalstack,
       });
       setConnectResult(result);
       setStep(3);
@@ -269,11 +282,31 @@ export function OnboardingPage() {
             </div>
 
             <div className="space-y-4 mb-6">
+              <div className="flex items-center gap-2 bg-[var(--color-surface)] p-3 rounded-lg border border-[var(--color-surface)]">
+                <input
+                  type="checkbox"
+                  id="localstack-toggle"
+                  checked={useLocalstack}
+                  onChange={(e) => setUseLocalstack(e.target.checked)}
+                  className="w-4 h-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
+                />
+                <label htmlFor="localstack-toggle" className="text-sm font-medium" style={{ color: "var(--color-text-primary)" }}>
+                  Use LocalStack (Local testing)
+                </label>
+              </div>
+
+              {useLocalstack && (
+                <div className="text-sm px-3 py-2 rounded-md" style={{ backgroundColor: "rgba(79, 70, 229, 0.1)", color: "var(--color-accent-hover)" }}>
+                  Endpoint: <strong>http://localhost:4566</strong>
+                </div>
+              )}
+
               <Input
                 label="AWS Access Key ID"
                 placeholder="AKIAIOSFODNN7EXAMPLE"
                 value={accessKey}
                 onChange={(e) => setAccessKey(e.target.value)}
+                disabled={useLocalstack}
               />
               <Input
                 label="AWS Secret Access Key"
@@ -281,15 +314,17 @@ export function OnboardingPage() {
                 placeholder="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
                 value={secretKey}
                 onChange={(e) => setSecretKey(e.target.value)}
+                disabled={useLocalstack}
               />
               <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-medium" style={{ color: "var(--color-text-secondary)" }}>
                   Region
                 </label>
                 <select
-                  className="input-field cursor-pointer"
+                  className="input-field cursor-pointer disabled:opacity-50"
                   value={region}
                   onChange={(e) => setRegion(e.target.value)}
+                  disabled={useLocalstack}
                 >
                   {REGIONS.map(({ value, label }) => (
                     <option key={value} value={value}>
@@ -310,6 +345,11 @@ export function OnboardingPage() {
                 }}
               >
                 {connectError}
+                {useLocalstack && (
+                  <div className="mt-2 text-xs opacity-90">
+                    Make sure LocalStack is running via Docker on port 4566.
+                  </div>
+                )}
               </div>
             )}
 

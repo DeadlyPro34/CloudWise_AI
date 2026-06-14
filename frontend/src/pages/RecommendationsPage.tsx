@@ -10,7 +10,7 @@ import {
   X,
   ArrowRight,
 } from "lucide-react";
-import { getRecommendations } from "../services/dashboard";
+import { getRecommendations, getDashboard } from "../services/dashboard";
 import { Button } from "../components/ui/Button";
 import type { Recommendation } from "../types";
 
@@ -81,6 +81,13 @@ export function RecommendationsPage() {
     queryFn: getRecommendations,
   });
 
+  const { data: dashboard } = useQuery({
+    queryKey: ["dashboard"],
+    queryFn: getDashboard,
+  });
+
+  const isConnected = dashboard?.is_connected;
+
   // Empty / Error state
   if (isError || (!isLoading && (!recommendations || recommendations.length === 0))) {
     return (
@@ -96,14 +103,18 @@ export function RecommendationsPage() {
           </div>
           <h3 className="mb-2">No recommendations yet.</h3>
           <p className="caption mb-6 max-w-sm mx-auto">
-            Connect AWS and run a scan to discover cost-saving opportunities.
+            {isConnected
+              ? "Your connected account (or LocalStack) has no resources to optimize yet. Create some resources and rescan."
+              : "Connect AWS and run a scan to discover cost-saving opportunities."}
           </p>
-          <Button
-            onClick={() => navigate("/onboarding")}
-            className="flex items-center justify-center gap-2 mx-auto"
-          >
-            Connect AWS Account <ArrowRight className="w-4 h-4" />
-          </Button>
+          {!isConnected && (
+            <Button
+              onClick={() => navigate("/onboarding")}
+              className="flex items-center justify-center gap-2 mx-auto"
+            >
+              Connect AWS Account <ArrowRight className="w-4 h-4" />
+            </Button>
+          )}
         </div>
       </div>
     );

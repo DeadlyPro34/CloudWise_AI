@@ -58,6 +58,7 @@ class CloudAccount(Base):
     aws_access_key_enc: Mapped[str | None] = mapped_column(String, nullable=True)
     aws_secret_key_enc: Mapped[str | None] = mapped_column(String, nullable=True)
     region: Mapped[str | None] = mapped_column(String(50), nullable=True, default="us-east-1")
+    is_localstack: Mapped[bool] = mapped_column(default=False, server_default="false")
 
     status: Mapped[CloudAccountStatus] = mapped_column(
         SQLEnum(CloudAccountStatus, name="cloud_account_status_enum"),

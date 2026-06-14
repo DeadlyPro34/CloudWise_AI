@@ -50,12 +50,14 @@ export interface AWSConnectPayload {
   aws_access_key_id: string;
   aws_secret_access_key: string;
   region: string;
+  use_localstack?: boolean;
 }
 
 export interface AWSConnectResponse {
   account_id: string;
   account_name: string;
   status: string;
+  environment: "aws" | "localstack";
 }
 
 export interface AWSScanResponse {

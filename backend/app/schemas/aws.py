@@ -12,12 +12,14 @@ class AWSConnectRequest(BaseModel):
     aws_access_key_id: str
     aws_secret_access_key: str
     region: str = "us-east-1"
+    use_localstack: bool = False
 
 
 class AWSConnectResponse(BaseModel):
     account_id: str
     account_name: str | None = None
     status: str
+    environment: str = "aws"
 
 
 class AWSScanResponse(BaseModel):

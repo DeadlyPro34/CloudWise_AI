@@ -73,6 +73,7 @@ def get_dashboard(
             "health_score": 0,
             "resource_count": 0,
             "cost_trend": [],
+            "is_connected": False,
         }
 
     res_ids_sq = _account_resource_ids_subquery(account_ids)
@@ -147,6 +148,7 @@ def get_dashboard(
         "health_score": round(health_score, 2),
         "resource_count": resource_count,
         "cost_trend": cost_trend,
+        "is_connected": True,
     }
 
 

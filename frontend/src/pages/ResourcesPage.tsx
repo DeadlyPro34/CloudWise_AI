@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Server, Search, CloudOff, ArrowRight } from "lucide-react";
 import { getResources } from "../services/aws";
+import { getDashboard } from "../services/dashboard";
 import { Button } from "../components/ui/Button";
 
 function formatCurrency(value: number): string {
@@ -44,6 +45,13 @@ export function ResourcesPage() {
     queryFn: getResources,
   });
 
+  const { data: dashboard } = useQuery({
+    queryKey: ["dashboard"],
+    queryFn: getDashboard,
+  });
+
+  const isConnected = dashboard?.is_connected;
+
   const filtered = useMemo(() => {
     if (!resources) return [];
     return resources.filter((r) => {
@@ -76,14 +84,18 @@ export function ResourcesPage() {
           </div>
           <h3 className="mb-2">No Resources Found</h3>
           <p className="caption mb-6 max-w-sm mx-auto">
-            No resources found. Connect your AWS account and run a scan to discover your infrastructure.
+            {isConnected
+              ? "Your connected account (or LocalStack) doesn't have any EC2 or EBS resources yet. Create some resources and rescan."
+              : "No resources found. Connect your AWS account and run a scan to discover your infrastructure."}
           </p>
-          <Button
-            onClick={() => navigate("/onboarding")}
-            className="flex items-center justify-center gap-2 mx-auto"
-          >
-            Go to Onboarding <ArrowRight className="w-4 h-4" />
-          </Button>
+          {!isConnected && (
+            <Button
+              onClick={() => navigate("/onboarding")}
+              className="flex items-center justify-center gap-2 mx-auto"
+            >
+              Go to Onboarding <ArrowRight className="w-4 h-4" />
+            </Button>
+          )}
         </div>
       </div>
     );
