@@ -38,13 +38,19 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 @app.exception_handler(Exception)
 def debug_exception_handler(request: Request, exc: Exception):
-    tb_str = "".join(traceback.format_tb(exc.__traceback__))
-    return JSONResponse(
-        status_code=500,
-        content={
-            "detail": f"Internal Server Error: {str(exc)}\n{tb_str}"
-        }
-    )
+    if settings.DEBUG:
+        tb_str = "".join(traceback.format_tb(exc.__traceback__))
+        return JSONResponse(
+            status_code=500,
+            content={
+                "detail": f"Error: {str(exc)}\n{tb_str}"
+            }
+        )
+    else:
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Internal server error"}
+        )
 
 # ------------------------------------------------------------
 # Security Headers
@@ -58,8 +64,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins_list,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "Accept"],
 )
 
 # ------------------------------------------------------------
