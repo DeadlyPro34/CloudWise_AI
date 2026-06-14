@@ -3,7 +3,6 @@ import { useEffect, useState, useRef } from "react";
 import {
   Cloud, TrendingUp, Lightbulb, MessageSquareText,
   Activity, Zap, ArrowRight, CheckCircle,
-  Twitter, Github, Linkedin
 } from "lucide-react";
 
 /* ── Typewriter hook ── */
@@ -570,10 +569,10 @@ function Footer() {
 
       <div className="footer-bottom">
         <p className="footer-copyright">© 2026 CloudWise AI · All rights reserved</p>
-        <div className="footer-socials">
-          <a href="#" className="footer-social-link"><Twitter className="w-4 h-4" /></a>
-          <a href="#" className="footer-social-link"><Github className="w-4 h-4" /></a>
-          <a href="#" className="footer-social-link"><Linkedin className="w-4 h-4" /></a>
+        <div className="footer-socials" style={{ fontSize: "13px", gap: "1.25rem" }}>
+          <a href="#" className="footer-social-link">Twitter</a>
+          <a href="#" className="footer-social-link">GitHub</a>
+          <a href="#" className="footer-social-link">LinkedIn</a>
         </div>
       </div>
     </footer>
