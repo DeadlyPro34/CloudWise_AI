@@ -1,139 +1,162 @@
 # CloudWise AI
 
-## Overview
-**Autonomous FinOps Copilot for AWS Infrastructure**
+**Team Name:** ideaforge  
+**Team Members:** 
+- Krisha Prakashkumar Kalal
+- Akhil Biju Varghese ([@DeadlyPro34](https://github.com/DeadlyPro34))
 
-CloudWise AI connects to your AWS account, discovers infrastructure, analyzes costs, detects anomalies, forecasts spending, generates optimization recommendations, and explains it all in plain English via an AI Copilot.
+**Live Demo:** [https://cloudwise-frontend.onrender.com](https://cloudwise-frontend.onrender.com)
 
-## Features
-- **User Authentication:** Secure JWT-based auth with Argon2 password hashing.
-- **AWS Integration:** IAM role-based AWS account connection UI with read-only access (with LocalStack fallback for local testing).
-- **Resource Discovery:** UI and backend integrations for AWS EC2 and EBS.
-- **Cost Analysis:** In-depth cost tracking and an overall Cloud Health Score.
-- **Recommendations Engine:** Identifies idle and unattached resources for rightsizing.
-- **Spend Forecasting:** Uses ML (Prophet) to predict future AWS costs.
-- **AI Copilot:** Groq Llama 3.3 70B API integration to answer plain-English questions about your cloud environment.
-- **Reporting:** Downloadable PDF reports for infrastructure and costs.
-
-## Tech Stack
-- **Frontend:** React 19, TypeScript, Vite, Tailwind CSS v4, TanStack Query, Recharts, Nginx (Proxy & Serving)
-- **Backend:** Python 3.12, FastAPI, SQLAlchemy 2, Alembic, Pydantic v2
-- **Database & Cache:** PostgreSQL 16, Redis (Caching & Rate Limiting)
-- **AWS & ML:** Boto3, LocalStack (Local AWS mock), scikit-learn, Prophet (forecasting)
-- **AI & Auth:** Groq API (Llama 3.3 70B), JWT, Argon2
-- **Tools/Deployment:** Docker Compose, Docker Multi-stage Builds
+> [!IMPORTANT]
+> **Notes for Judges & Reviewers:**
+> - **Free Tier Limitations:** The backend runs on Render's free tier, meaning it **spins down after 15 minutes of inactivity**. The very first request after the server sleeps may take 30-60 seconds to wake up. Please be patient on your first visit!
+> - **Database:** The free PostgreSQL instance will expire after 90 days (which is perfectly fine for the scope of this hackathon).
 
 ---
 
-## Installation & Running Locally (Recommended: Docker Compose)
+## 2. Overview
+CloudWise AI is an autonomous FinOps Copilot designed to tackle cloud infrastructure waste. It connects securely to your AWS account to discover active infrastructure, analyze costs, detect anomalies, forecast spending, and generate actionable optimization recommendations. It simplifies cloud billing complexities by explaining them in plain English via a built-in AI Copilot.
 
-The easiest and most reliable way to run the entire application stack locally is using Docker Compose. This will automatically spin up the Frontend, Backend, PostgreSQL database, Redis instance, and LocalStack environment.
+**Problem it solves:** Engineering teams often overspend on cloud resources due to lack of visibility, unattached EBS volumes, idle EC2 instances, and difficult-to-understand billing dashboards. CloudWise AI acts as an intelligent watchdog that translates dense cloud billing data into actionable, money-saving insights.
+
+**Who it is for:** Cloud Architects, DevOps Engineers, and Engineering Managers who want strict control over their AWS spending without needing a PhD in AWS billing.
+
+## 3. Features
+- **Seamless AWS Integration:** Connect AWS accounts via secure IAM credentials for read-only infrastructure discovery.
+- **Resource Discovery:** Automatically scans and inventories EC2 instances and EBS volumes.
+- **Cost Analysis Dashboard:** In-depth cost tracking, anomaly detection, and an overall Cloud Health Score.
+- **Recommendations Engine:** Identifies idle compute and unattached storage to provide actionable rightsizing advice.
+- **Spend Forecasting:** Predicts future AWS costs using machine learning models.
+- **Cloud Simulator:** See how much money you would save by dropping a specific resource in real-time.
+- **AI Copilot:** An intelligent chatbot powered by Llama 3.3 70B (via Groq) to answer plain-English questions about your cloud environment and billing.
+- **Exportable Reports:** Download detailed PDF reports summarizing infrastructure and costs.
+
+## 4. Screenshots / Preview
+
+### Landing Page
+![Landing Page](assets/Landing_page.png)
+
+### Sign Up / Authentication
+![Sign Up](assets/Sign_up_page.png)
+
+### Cost Analysis Dashboard
+![Dashboard](assets/Dashboard_page.png)
+
+### Resource Management
+![Resource Inventory](assets/Resource_page.png)
+
+### AI Rightsizing Recommendations
+![Recommendations](assets/Recommendations_page.png)
+
+### AI Copilot Chat
+![AI Copilot](assets/AI_Copilot.png)
+
+### Cloud Cost Simulator
+![Cloud Simulator](assets/Simulator_page.png)
+
+## 5. Tech Stack
+- **Frontend:** React 19, TypeScript, Vite, React Router, Recharts, Lucide React
+- **Backend:** Python 3.12, FastAPI, SQLAlchemy 2, Pydantic v2
+- **Database:** PostgreSQL 16
+- **Machine Learning & Integrations:** Prophet (forecasting), Boto3 (AWS SDK), Groq API (Llama 3.3 70B)
+- **Deployment:** Docker, Render
+
+## 6. Installation
+
+Follow these steps to run CloudWise AI locally on your machine.
 
 ### Prerequisites
-- [Docker & Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
-- A Groq API key (Free at https://console.groq.com).
-- Optional: LocalStack installed locally if you prefer running it outside of Docker (the application uses `host.docker.internal` to connect to it).
+- Node.js 22+
+- Python 3.12+
+- Groq API Key (Available for free at [console.groq.com](https://console.groq.com/))
 
-### 1. Clone the repository
+### Clone the repository
 ```bash
-git clone <YOUR_REPO_URL>
-cd cloudwise-ai
+git clone https://github.com/DeadlyPro34/Cloudwise_ai.git
+cd Cloudwise_ai
 ```
 
-### 2. Environment Configuration
-You need to set up the environment variables for the backend and frontend. 
-
-**Backend (`backend/.env`):**
+### Set up Environment Variables
+**Backend Configuration:**
 ```bash
 cd backend
 cp .env.example .env
 ```
-*Edit `backend/.env` and add your `GROQ_API_KEY` along with a random `ENCRYPTION_KEY` and `JWT_SECRET`. To generate a secure encryption key, run: `python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"`*
+Open `backend/.env` and add your `GROQ_API_KEY` and a securely generated `JWT_SECRET` and `ENCRYPTION_KEY`.
 
-**Frontend (`frontend/.env`):**
+**Frontend Configuration:**
 ```bash
 cd ../frontend
 cp .env.example .env
 ```
-*(The defaults in the frontend `.env` are pre-configured to work perfectly with the Docker Nginx Proxy setup.)*
+Ensure your `VITE_API_URL` points to `http://127.0.0.1:8000/api/v1` for local development.
 
-### 3. Run the Application
-Navigate back to the root of the project where `docker-compose.yml` is located and run:
-
-```bash
-# Build and start all services in the background
-docker-compose up --build -d
-```
-
-### 4. Access the Application
-- **Frontend App:** Open your browser to http://localhost:5173
-- **Backend API Docs:** Open your browser to http://localhost:8000/docs
-- **Nginx Proxy:** The frontend container automatically routes any traffic starting with `/api/v1/` to the backend container to bypass CORS restrictions entirely.
-
-### 5. Managing the Containers
-To view live logs from the containers:
-```bash
-docker-compose logs -f
-```
-To stop the application:
-```bash
-docker-compose down
-```
-
----
-
-## Running Locally (Manual Development Mode)
-
-If you need to run the application natively for active debugging without Docker:
-
-### Prerequisites
-- Python 3.11+
-- Node.js 22+
-- A running PostgreSQL instance (or remove `DATABASE_URL` in `.env` to fallback to SQLite)
-- A running Redis instance (or remove `REDIS_URL` in `.env` to fallback to Memory Limiter)
-
-### Start the Backend
+### Run the Backend
 ```bash
 cd backend
 python -m venv venv
 
-# Activate Virtual Environment
-# On Windows:
+# Activate Virtual Environment (Windows)
 venv\Scripts\activate
-# On macOS/Linux:
+# Activate Virtual Environment (Mac/Linux)
 source venv/bin/activate
 
+# Install dependencies
 pip install -r requirements.txt
-alembic upgrade head           # Run database migrations
+
+# Run database migrations
+alembic upgrade head
+
+# Start the server
 uvicorn app.main:app --reload --port 8000
 ```
 
-### Start the Frontend
+### Run the Frontend
+Open a new terminal window:
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+The app will be accessible at `http://localhost:5173`.
 
-The frontend will be available at http://localhost:5173 and will directly communicate with the backend at `http://localhost:8000`.
+## 7. Usage
+1. Open the application and create an account.
+2. *(Optional)* Run `python seed_demo_data.py` inside the backend folder to instantly populate your local database with mock AWS data to test the platform.
+3. If using real AWS data, navigate to the **Connect AWS** modal in the dashboard and securely input your IAM read-only keys.
+4. View your synced resources, click on **Recommendations** to see potential cost savings, and use the **Copilot** to ask questions like *"Which EC2 instance is costing me the most?"*
 
----
+## 8. Project Structure
+- `/backend`: FastAPI Python server containing the core logic, AWS Boto3 integration, ML forecasting models, database models, and Alembic migrations.
+- `/frontend`: React application configured with Vite. Contains pages, reusable UI components, and API integration hooks.
+- `/docs`: Technical Requirements, Application Flow, UI/UX briefs, and Backend Schema documentation.
+- `/assets`: Images and screenshots used in this documentation.
 
-## AWS Integration & LocalStack
-The application has built-in support for mocking AWS API responses using LocalStack to avoid incurring any costs during development.
+## 9. API Reference
+Key endpoints provided by the backend:
+- `POST /api/v1/auth/register` - Create a new user account.
+- `POST /api/v1/auth/login` - Authenticate and fetch a JWT access token.
+- `GET /api/v1/dashboard` - Retrieve aggregated dashboard key metrics.
+- `POST /api/v1/aws/connect` - Validate and securely store AWS credentials.
+- `POST /api/v1/aws/scan` - Trigger an infrastructure discovery scan.
+- `GET /api/v1/aws/resources` - Fetch inventoried cloud resources.
+- `POST /api/v1/copilot/chat` - Chat with the AI assistant.
 
-If you have LocalStack running on your host machine (e.g., `localstack start`), the backend Docker container will automatically route AWS credential verifications to `http://host.docker.internal:4566`. Ensure you toggle "Use LocalStack Mock Environment" in the UI when connecting.
+## 10. Configuration
+The following backend environment variables are required:
+- `DATABASE_URL` (Defaults to SQLite for easy local setup)
+- `JWT_SECRET` (For signing auth tokens)
+- `ENCRYPTION_KEY` (For encrypting AWS IAM credentials at rest)
+- `GROQ_API_KEY` (Required for AI Copilot functionality)
 
-## API Endpoints Reference
-Once the backend is running, you can access the interactive Swagger documentation at `http://localhost:8000/docs`.
+## 11. Future Improvements
+- **AWS Organizations Support:** Multi-account consolidated billing analysis.
+- **Slack/Discord Integration:** Get automated cost spike alerts directly in messaging platforms.
+- **Automated Remediation:** Allow the Copilot to execute Lambda functions to automatically stop idle instances with a single click.
+- **Additional Cloud Providers:** Support for Google Cloud Platform (GCP) and Microsoft Azure.
 
-**Key Endpoints:**
-- `POST /api/v1/auth/register` - Register a new user
-- `POST /api/v1/auth/login` - Authenticate and receive JWT
-- `GET /api/v1/dashboard` - Fetch dashboard KPIs (Cached via Redis)
-- `POST /api/v1/aws/connect` - Authenticate AWS IAM credentials
-- `GET /api/v1/aws/resources` - Fetch discovered AWS resources
-- `POST /api/v1/copilot/chat` - Interact with the AI Copilot
+## 12. Contributing
+Contributions, issues, and feature requests are welcome. Feel free to check the issues page.
 
-## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+## 13. License
+This project is licensed under the MIT License.
