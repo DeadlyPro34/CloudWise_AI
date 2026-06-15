@@ -160,7 +160,7 @@ export function LoginPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <label style={{ fontSize: "0.82rem", fontWeight: 600, color: "#8B93B5", letterSpacing: "0.03em" }}>Password</label>
-                <a href="#" style={{ fontSize: "0.8rem", color: "#7B75FF", fontWeight: 500, textDecoration: "none" }}>Forgot password?</a>
+                <Link to="/forgot-password" style={{ fontSize: "0.8rem", color: "#7B75FF", fontWeight: 500, textDecoration: "none" }}>Forgot password?</Link>
               </div>
               <div style={{ position: "relative" }}>
                 <Lock className="w-4 h-4" style={{ position: "absolute", left: "0.875rem", top: "50%", transform: "translateY(-50%)", color: "#4B5680", pointerEvents: "none" }} />
