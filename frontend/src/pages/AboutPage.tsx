@@ -31,7 +31,7 @@ const VALUES = [
 
 const TIMELINE = [
   { year: "2024", label: "Idea born inside a $2M/month AWS bill", accent: true },
-  { year: "Early 2025", label: "Founded by ex-AWS & ex-Datadog engineers", accent: false },
+  { year: "Early 2026", label: "Founded by ex-AWS & ex-Datadog engineers", accent: false },
   { year: "Feb 2026", label: "Public beta launch — Cost Analysis, Forecasting, Health Score", accent: false },
   { year: "Apr 2026", label: "Slack integration and tag-level cost breakdowns ship", accent: false },
   { year: "Jun 2026", label: "Multi-account AWS Organizations support & AI Copilot chaining", accent: true },
@@ -98,7 +98,7 @@ export function AboutPage() {
             </span>
           </h1>
           <p style={{ fontSize: "1.15rem", color: "#8B93B5", lineHeight: 1.7, maxWidth: 560, margin: "0 auto" }}>
-            CloudWise AI was founded in 2025 by a team of ex-AWS and ex-Datadog engineers who were tired of watching
+            CloudWise AI was founded in 2026 by a team of ex-AWS and ex-Datadog engineers who were tired of watching
             engineering teams burn millions on cloud waste they didn't know existed.
           </p>
         </div>
