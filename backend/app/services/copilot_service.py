@@ -7,6 +7,7 @@ system prompt.  chat() sends the user's message with context to Groq
 """
 
 import uuid
+import re
 from datetime import date, timedelta
 
 from groq import Groq
@@ -99,6 +100,22 @@ def build_context(db: Session, cloud_account_id: uuid.UUID) -> str:
         lines.append("No open recommendations at this time.")
 
     return "\n".join(lines)
+
+
+def _wolfram_compute(query: str) -> str | None:
+    """Get a computational answer from Wolfram Alpha."""
+    if not settings.WOLFRAM_APP_ID:
+        return None
+    try:
+        import httpx
+        url = "https://api.wolframalpha.com/v1/result"
+        params = {"appid": settings.WOLFRAM_APP_ID, "i": query}
+        resp = httpx.get(url, params=params, timeout=5)
+        if resp.status_code == 200:
+            return resp.text
+        return None
+    except Exception:
+        return None
 
 
 def chat(
@@ -194,6 +211,41 @@ def chat(
                 "The AI Copilot encountered an error. "
                 "Please check your Groq API key in Settings."
             )
+
+    # ── Wolfram-enhanced answers ─────────────────────────────
+    savings_keywords = [
+        "save", "savings", "cost", "spend", "shut down",
+        "delete", "remove", "reduce", "month", "year",
+    ]
+    message_lower = user_message.lower()
+    if (
+        settings.WOLFRAM_APP_ID
+        and any(kw in message_lower for kw in savings_keywords)
+        and context
+    ):
+        # Extract total spend and potential savings from the context string
+        total_spend = 0.0
+        potential_savings = 0.0
+        spend_match = re.search(r"Total spend.*?\$([\d,]+\.?\d*)", context)
+        if spend_match:
+            total_spend = float(spend_match.group(1).replace(",", ""))
+        # Sum up recommendation savings from context
+        savings_matches = re.findall(r"saves \$([\d,]+\.?\d*)/mo", context)
+        for s in savings_matches:
+            potential_savings += float(s.replace(",", ""))
+
+        if total_spend > 0 or potential_savings > 0:
+            wolfram_query = (
+                f"If monthly AWS spend is ${total_spend:.0f} "
+                f"and potential savings are ${potential_savings:.0f}, "
+                f"what is the annual saving and percentage reduction?"
+            )
+            wolfram_answer = _wolfram_compute(wolfram_query)
+            if wolfram_answer and len(wolfram_answer) < 200:
+                response_text = (
+                    response_text
+                    + f"\n\n📊 *Wolfram Computation:* {wolfram_answer}"
+                )
 
     # Persist assistant response
     db.add(CopilotMessage(

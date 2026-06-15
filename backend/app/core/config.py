@@ -56,6 +56,11 @@ class Settings(BaseSettings):
     GROQ_MODEL: str = "llama-3.3-70b-versatile"
 
     # ------------------------------------------------------------
+    # Wolfram Alpha (optional — for cost simulator verification)
+    # ------------------------------------------------------------
+    WOLFRAM_APP_ID: str | None = Field(default=None, env="WOLFRAM_APP_ID")
+
+    # ------------------------------------------------------------
     # Rate Limiting
     # ------------------------------------------------------------
     RATE_LIMIT_LOGIN: str = "5/minute"

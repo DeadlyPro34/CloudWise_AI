@@ -8,6 +8,7 @@ import {
   Settings,
   Zap,
   X,
+  Calculator,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -15,6 +16,7 @@ const NAV_ITEMS = [
   { to: "/resources",       label: "Resources",       icon: Server },
   { to: "/recommendations", label: "Recommendations", icon: Lightbulb },
   { to: "/copilot",         label: "AI Copilot",      icon: MessageSquareText },
+  { to: "/simulator",       label: "Simulator",       icon: Calculator },
   { to: "/reports",         label: "Reports",         icon: FileText },
   { to: "/settings",        label: "Settings",        icon: Settings },
 ];

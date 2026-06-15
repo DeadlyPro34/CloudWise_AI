@@ -24,6 +24,7 @@ import { DashboardPage } from "./pages/DashboardPage";
 import { ResourcesPage } from "./pages/ResourcesPage";
 import { RecommendationsPage } from "./pages/RecommendationsPage";
 import { CopilotPage } from "./pages/CopilotPage";
+import { SimulatorPage } from "./pages/SimulatorPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { BackgroundMesh } from "./components/BackgroundMesh";
@@ -68,6 +69,7 @@ function App() {
                   <Route path="/resources" element={<ResourcesPage />} />
                   <Route path="/recommendations" element={<RecommendationsPage />} />
                   <Route path="/copilot" element={<CopilotPage />} />
+                  <Route path="/simulator" element={<SimulatorPage />} />
                   <Route path="/reports" element={<ReportsPage />} />
                   <Route path="/settings" element={<SettingsPage />} />
                 </Route>
