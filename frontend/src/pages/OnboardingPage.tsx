@@ -111,7 +111,7 @@ export function OnboardingPage() {
       {/* Back button */}
       <button 
         onClick={() => navigate('/dashboard')}
-        className="absolute top-8 left-8 flex items-center gap-2 text-sm font-medium transition-colors hover:text-(--color-text-primary) z-20"
+        className="absolute top-12 sm:top-8 left-4 sm:left-8 flex items-center gap-2 text-sm font-medium transition-colors hover:text-(--color-text-primary) z-20"
         style={{ color: "var(--color-text-secondary)" }}
       >
         <ArrowLeft className="w-4 h-4" /> Back to Dashboard
@@ -185,7 +185,7 @@ export function OnboardingPage() {
               using AI-powered recommendations. Let's get your account connected in just a
               few minutes.
             </p>
-            <div className="flex sm:grid sm:grid-cols-3 gap-3 sm:gap-4 mb-8 overflow-x-auto pb-4 snap-x hide-scrollbar" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-8 w-full">
               {[
                 { icon: Server, label: "Resource Analysis", desc: "Scan EC2 & EBS" },
                 { icon: Shield, label: "AI Insights", desc: "Smart Recommendations" },
@@ -193,12 +193,12 @@ export function OnboardingPage() {
               ].map(({ icon: Icon, label, desc }) => (
                 <div
                   key={label}
-                  className="p-4 rounded-xl transition-all duration-200 hover:scale-105 min-w-[140px] flex-1 flex-shrink-0 snap-center flex flex-col items-center justify-center text-center"
+                  className="p-2 sm:p-4 rounded-xl transition-all duration-200 hover:scale-105 flex flex-col items-center justify-center text-center"
                   style={{ backgroundColor: "var(--color-surface)" }}
                 >
-                  <Icon className="w-6 h-6 mb-2" style={{ color: "var(--color-accent-hover)" }} />
-                  <p className="text-sm font-medium w-full">{label}</p>
-                  <p className="text-xs w-full mt-1" style={{ color: "var(--color-text-secondary)" }}>{desc}</p>
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 mb-1 sm:mb-2" style={{ color: "var(--color-accent-hover)" }} />
+                  <p className="text-[11px] sm:text-sm font-medium w-full leading-tight">{label}</p>
+                  <p className="text-[9px] sm:text-xs w-full mt-1 leading-tight" style={{ color: "var(--color-text-secondary)" }}>{desc}</p>
                 </div>
               ))}
             </div>
