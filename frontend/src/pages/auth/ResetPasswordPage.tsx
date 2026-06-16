@@ -53,6 +53,7 @@ export function ResetPasswordPage() {
           alignItems: "center",
           justifyContent: "center",
           padding: "2rem 1.5rem",
+          overflowX: "hidden",
           overflowY: "auto",
           position: "relative",
         }}
