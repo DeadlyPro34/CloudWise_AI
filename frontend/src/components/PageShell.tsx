@@ -108,8 +108,8 @@ function Navbar() {
           to="/"
           style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "0.65rem", flexShrink: 0 }}
         >
-          <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 flex items-center justify-center bg-transparent">
-            <img src="/logo.png" alt="CloudWise AI logo" className="w-full h-full object-cover" />
+          <div className="h-8 sm:h-9 shrink-0 flex items-center justify-center bg-transparent">
+            <img src="/logo.png" alt="CloudWise AI logo" className="h-full w-auto object-contain drop-shadow-sm" />
           </div>
           <span
             style={{
@@ -293,8 +293,8 @@ function PageFooter() {
         {/* Brand */}
         <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 flex items-center justify-center bg-transparent">
-              <img src="/logo.png" alt="CloudWise AI logo" className="w-full h-full object-cover" />
+            <div className="h-8 sm:h-9 shrink-0 flex items-center justify-center bg-transparent">
+              <img src="/logo.png" alt="CloudWise AI logo" className="h-full w-auto object-contain drop-shadow-sm" />
             </div>
             <span style={{ fontSize: "1rem", fontWeight: 700, color: "#EEF2FF", letterSpacing: "-0.01em" }}>
               CloudWise AI

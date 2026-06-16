@@ -62,8 +62,8 @@ export function ResetPasswordPage() {
 
         <div className="animate-scale-in" style={{ width: "100%", maxWidth: 420, position: "relative", zIndex: 1 }}>
           <div style={{ marginBottom: "2.25rem" }}>
-            <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 flex items-center justify-center bg-transparent mb-6">
-              <img src="/logo.png" alt="CloudWise AI logo" className="w-full h-full object-cover" />
+            <div className="h-10 sm:h-12 shrink-0 flex items-center justify-center bg-transparent mb-6">
+              <img src="/logo.png" alt="CloudWise AI logo" className="h-full w-auto object-contain drop-shadow-sm" />
             </div>
             <h2 style={{ fontSize: "clamp(1.6rem, 4vw, 2rem)", marginBottom: "0.5rem", color: "#EEF2FF" }}>Set New Password</h2>
             <p className="caption">Enter your reset token and choose a new password.</p>

@@ -106,8 +106,8 @@ export function SignupPage() {
 
         {/* Logo */}
         <div style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", gap: "0.75rem" }}>
-          <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 flex items-center justify-center bg-transparent">
-            <img src="/logo.png" alt="CloudWise AI logo" className="w-full h-full object-cover" />
+          <div className="h-10 sm:h-12 shrink-0 flex items-center justify-center bg-transparent mb-6">
+            <img src="/logo.png" alt="CloudWise AI logo" className="h-full w-auto object-contain" />
           </div>
           <span style={{ fontSize: "1.1rem", fontWeight: 600, color: "#EEF2FF", fontFamily: "var(--font-sans)" }}>CloudWise AI</span>
         </div>
@@ -161,8 +161,8 @@ export function SignupPage() {
             className="show-mobile"
             style={{ display: "none", alignItems: "center", gap: "0.5rem", marginBottom: "2rem" }}
           >
-            <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 flex items-center justify-center bg-transparent">
-              <img src="/logo.png" alt="CloudWise AI logo" className="w-full h-full object-cover" />
+            <div className="h-10 sm:h-12 shrink-0 flex items-center justify-center bg-transparent mb-6">
+              <img src="/logo.png" alt="CloudWise AI logo" className="h-full w-auto object-contain" />
             </div>
             <span style={{ fontSize: "1rem", fontWeight: 600, color: "#EEF2FF" }}>CloudWise AI</span>
           </div>

@@ -47,8 +47,8 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
       >
         {/* Logo + close (mobile) */}
         <div className="flex items-center gap-2.5 px-3 py-2 mb-7">
-          <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 flex items-center justify-center bg-transparent">
-            <img src="/logo.png" alt="CloudWise AI logo" className="w-full h-full object-cover" />
+          <div className="h-8 sm:h-9 shrink-0 flex items-center justify-center bg-transparent">
+            <img src="/logo.png" alt="CloudWise AI logo" className="h-full w-auto object-contain drop-shadow-sm" />
           </div>
           <span
             className="text-[1rem] font-semibold tracking-tight flex-1"
