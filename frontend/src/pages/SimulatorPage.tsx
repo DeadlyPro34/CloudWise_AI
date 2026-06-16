@@ -193,22 +193,22 @@ export function SimulatorPage() {
 
         <div className="lg:col-span-7">
           {result ? (
-            <div className="card h-full animate-[fadeIn_0.5s_ease] border-accent/20 bg-gradient-to-br from-surface to-accent/5">
+            <div className="card h-full animate-[fadeIn_0.5s_ease] border-accent/20 bg-gradient-to-br from-surface to-accent/5 p-[20px_18px] sm:p-6">
               <h3 className="mb-6 flex items-center gap-2 text-lg font-semibold">
                 <CheckCircle2 className="w-5 h-5 text-success" />
                 Simulation Results
               </h3>
               
-              <div className="grid grid-cols-2 gap-4 mb-8">
-                <div className="bg-surface-hover rounded-xl p-5 border border-white/5">
-                  <p className="text-sm text-text-secondary mb-1">Projected Monthly</p>
-                  <p className="text-3xl font-bold font-sans tracking-tight">
+              <div className="grid grid-cols-2 gap-[10px] sm:gap-4 mb-8">
+                <div className="bg-surface-hover rounded-xl p-[14px_10px] sm:p-5 border border-white/5 min-w-0">
+                  <p className="text-xs sm:text-sm text-text-secondary mb-1">Projected Monthly</p>
+                  <p className="text-[22px] sm:text-3xl font-bold font-sans tracking-tight whitespace-nowrap overflow-hidden text-ellipsis tabular-nums">
                     {formatCurrency(result.projected_monthly)}
                   </p>
                 </div>
-                <div className="bg-surface-hover rounded-xl p-5 border border-white/5">
-                  <p className="text-sm text-text-secondary mb-1">Projected Annual</p>
-                  <p className="text-3xl font-bold font-sans tracking-tight">
+                <div className="bg-surface-hover rounded-xl p-[14px_10px] sm:p-5 border border-white/5 min-w-0">
+                  <p className="text-xs sm:text-sm text-text-secondary mb-1">Projected Annual</p>
+                  <p className="text-[22px] sm:text-3xl font-bold font-sans tracking-tight whitespace-nowrap overflow-hidden text-ellipsis tabular-nums">
                     {formatCurrency(result.projected_annual)}
                   </p>
                 </div>
@@ -217,19 +217,19 @@ export function SimulatorPage() {
               <div className="bg-success/10 border border-success/20 rounded-xl p-6 mb-8 text-center relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-success/20 rounded-full blur-3xl -mr-16 -mt-16"></div>
                 <p className="text-sm font-medium text-success mb-2 uppercase tracking-wider">Estimated Savings</p>
-                <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-                  <div>
-                    <p className="text-4xl font-black text-success tracking-tight">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+                  <div className="flex items-baseline justify-center">
+                    <span className="text-[32px] sm:text-4xl font-black text-success tracking-tight tabular-nums">
                       {formatCurrency(result.monthly_savings)}
-                      <span className="text-base font-medium text-success/70 ml-1">/mo</span>
-                    </p>
+                    </span>
+                    <span className="text-sm sm:text-base font-medium text-success/70 ml-1">/mo</span>
                   </div>
-                  <div className="hidden md:block w-px h-12 bg-success/20"></div>
-                  <div>
-                    <p className="text-4xl font-black text-success tracking-tight">
+                  <div className="hidden sm:block w-px h-12 bg-success/20"></div>
+                  <div className="flex items-baseline justify-center">
+                    <span className="text-[32px] sm:text-4xl font-black text-success tracking-tight tabular-nums">
                       {formatCurrency(result.annual_savings)}
-                      <span className="text-base font-medium text-success/70 ml-1">/yr</span>
-                    </p>
+                    </span>
+                    <span className="text-sm sm:text-base font-medium text-success/70 ml-1">/yr</span>
                   </div>
                 </div>
                 <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-success/20 text-success text-sm font-semibold">
