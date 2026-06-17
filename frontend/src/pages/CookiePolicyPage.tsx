@@ -107,7 +107,7 @@ export function CookiePolicyPage() {
             Cookie Policy
           </h1>
           <p style={{ color: "#6b7280", fontSize: "0.9rem", marginBottom: "0.75rem" }}>
-            Last updated: <strong style={{ color: "#8B93B5" }}>March 10, 2026</strong>
+            Last updated: <strong style={{ color: "#8B93B5" }}>June 15, 2026</strong>
           </p>
           <p style={{ fontSize: "1.05rem", color: "#8B93B5", lineHeight: 1.75, margin: "0 auto", maxWidth: 520 }}>
             CloudWise AI uses cookies to keep you signed in, remember your preferences, and understand how the product is used.

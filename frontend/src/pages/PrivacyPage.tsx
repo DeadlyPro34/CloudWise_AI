@@ -100,7 +100,7 @@ export function PrivacyPage() {
             Privacy Policy
           </h1>
           <p style={{ color: "#6b7280", fontSize: "0.9rem", marginBottom: "0.75rem" }}>
-            Last updated: <strong style={{ color: "#8B93B5" }}>June 1, 2026</strong>
+            Last updated: <strong style={{ color: "#8B93B5" }}>June 15, 2026</strong>
           </p>
           <p style={{ fontSize: "1.05rem", color: "#8B93B5", lineHeight: 1.75, margin: "0 auto", maxWidth: 520 }}>
             CloudWise AI is committed to protecting your personal data. Here's exactly what we collect, why, and what you can do about it.

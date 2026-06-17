@@ -102,7 +102,7 @@ export function TermsPage() {
             Terms of Service
           </h1>
           <p style={{ color: "#6b7280", fontSize: "0.9rem", marginBottom: "0.75rem" }}>
-            Effective: <strong style={{ color: "#8B93B5" }}>February 15, 2026</strong>
+            Effective: <strong style={{ color: "#8B93B5" }}>June 15, 2026</strong>
           </p>
           <p style={{ fontSize: "1.05rem", color: "#8B93B5", lineHeight: 1.75, margin: "0 auto", maxWidth: 520 }}>
             By using CloudWise AI you agree to these terms. Here's what that means in plain English.
