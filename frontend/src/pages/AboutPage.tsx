@@ -202,7 +202,18 @@ export function AboutPage() {
           {/* Vertical line */}
           <div style={{ position: "absolute", left: 7, top: 0, bottom: 0, width: 2, background: "rgba(91,82,240,0.2)", borderRadius: 2 }} />
           {TIMELINE.map(({ year, label, accent }, i) => (
-            <div key={i} style={{ position: "relative", marginBottom: "2rem", display: "flex", alignItems: "flex-start", gap: "1rem" }}>
+            <div 
+              key={i} 
+              className="animate-fade-up"
+              style={{ 
+                position: "relative", 
+                marginBottom: "2rem", 
+                display: "flex", 
+                alignItems: "flex-start", 
+                gap: "1rem",
+                animationDelay: `${i * 0.15}s`
+              }}
+            >
               <div
                 style={{
                   position: "absolute",
