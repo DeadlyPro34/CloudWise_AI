@@ -1,3 +1,4 @@
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Shield, Globe, Lightbulb, Users, ArrowRight, CheckCircle } from "lucide-react";
 import { PageShell } from "../components/PageShell";
@@ -38,6 +39,27 @@ const TIMELINE = [
 ];
 
 export function AboutPage() {
+  const [timelineVisible, setTimelineVisible] = useState(false);
+  const timelineRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setTimelineVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (timelineRef.current) {
+      observer.observe(timelineRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <PageShell>
       {/* Hero */}
@@ -193,7 +215,7 @@ export function AboutPage() {
       </section>
 
       {/* Timeline */}
-      <section style={{ padding: "0 32px 80px", maxWidth: 700, margin: "0 auto" }}>
+      <section ref={timelineRef} style={{ padding: "0 32px 80px", maxWidth: 700, margin: "0 auto" }}>
         <h2 style={{ textAlign: "center", color: "#EEF2FF", fontSize: "clamp(1.5rem, 3vw, 1.9rem)", marginBottom: "0.75rem", fontWeight: 700, letterSpacing: "-0.02em" }}>
           How we got here
         </h2>
@@ -204,13 +226,14 @@ export function AboutPage() {
           {TIMELINE.map(({ year, label, accent }, i) => (
             <div 
               key={i} 
-              className="animate-fade-up"
+              className={timelineVisible ? "animate-fade-up" : ""}
               style={{ 
                 position: "relative", 
                 marginBottom: "2rem", 
                 display: "flex", 
                 alignItems: "flex-start", 
                 gap: "1rem",
+                opacity: timelineVisible ? 1 : 0,
                 animationDelay: `${i * 0.15}s`
               }}
             >
